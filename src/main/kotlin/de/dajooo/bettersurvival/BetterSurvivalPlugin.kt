@@ -1,5 +1,6 @@
 package de.dajooo.bettersurvival
 
+import com.github.shynixn.mccoroutine.bukkit.registerSuspendingEvents
 import de.dajooo.bettersurvival.commands.registerCommands
 import de.dajooo.bettersurvival.config.Config
 import de.dajooo.bettersurvival.config.MessageConfig
@@ -8,6 +9,7 @@ import de.dajooo.bettersurvival.config.loadMessageConfig
 import de.dajooo.bettersurvival.database.connectDatabase
 import de.dajooo.bettersurvival.feature.FeatureRegistry
 import de.dajooo.bettersurvival.gui.feature.FeatureOverview
+import de.dajooo.bettersurvival.listeners.DatabaseListener
 import de.dajooo.bettersurvival.listeners.VisualsListener
 import de.dajooo.kaper.KotlinPlugin
 import de.dajooo.kaper.extensions.pluginManager
@@ -35,10 +37,11 @@ class BetterSurvivalPlugin : KotlinPlugin() {
                 single { KotlinLogging.logger(slF4JLogger) }
                 single { FeatureRegistry().init() }
                 single { ViewFrame.create(this@BetterSurvivalPlugin).with(FeatureOverview()).register() }
+                single { registerCommands() }
             })
         }
         pluginManager.registerEvents(VisualsListener, this)
-        registerCommands()
+        pluginManager.registerSuspendingEvents(DatabaseListener, this)
     }
 
     override suspend fun enableSuspending() {

@@ -11,6 +11,7 @@ data class MessageConfig(
     val featureNotFound: String = "<red><yellow><feature></yellow> has not been found!</red>",
     val featureEnabled: String = "<feature> <gray>has been <green>enabled</green>!</gray>",
     val featureDisabled: String = "<feature> <gray>has been <red>disabled</red>!</gray>",
+    val playersOnlyCommand: String = "Only players can execute this command."
 )
 
 fun loadMessageConfig(basePath: Path) = loadYamlConfig(basePath.resolve("messages.yaml"), MessageConfig())

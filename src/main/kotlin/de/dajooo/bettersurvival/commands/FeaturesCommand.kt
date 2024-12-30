@@ -77,7 +77,7 @@ object FeaturesCommand : KoinComponent {
     @Subcommand("gui")
     @CommandPermission("bettersurvival.feature.gui")
     fun openGui(actor: BukkitCommandActor) {
-        val player = actor.asPlayer() ?: return actor.sender().sendMessage("Only players can execute this command.")
+        val player = actor.asPlayer() ?: return actor.sender().sendMessage(messages.playersOnlyCommand)
         viewFrame.open(FeatureOverview::class.java, player)
     }
 }

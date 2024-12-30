@@ -1,14 +1,12 @@
 package de.dajooo.bettersurvival.database.model
 
 import de.dajooo.bettersurvival.database.delegates.location
-import de.dajooo.kommons.exposed.nanoid.NanoIdEntity
-import de.dajooo.kommons.exposed.nanoid.NanoIdTable
-import de.dajooo.kommons.nanoid.NanoId
-import org.bukkit.Bukkit
-import org.bukkit.Location
+import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 
-object Homes : NanoIdTable("homes") {
+object Homes : IntIdTable("homes") {
     val name = varchar("name", 255)
     val x = double("x")
     val y = double("y")
@@ -19,14 +17,10 @@ object Homes : NanoIdTable("homes") {
     val player = reference("player", Players)
 }
 
-class Home(id: EntityID<NanoId>) : NanoIdEntity(id) {
+class Home(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<Home>(Homes)
+
     var name by Homes.name
-    var x by Homes.x
-    var y by Homes.y
-    var z by Homes.z
-    var world by Homes.world
-    var yaw by Homes.yaw
-    var pitch by Homes.pitch
     var player by PlayerEntity referencedOn Homes.player
 
     var location by location(Homes.world, Homes.x, Homes.y, Homes.z, Homes.yaw, Homes.pitch)
