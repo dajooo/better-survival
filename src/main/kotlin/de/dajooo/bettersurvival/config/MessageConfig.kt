@@ -6,7 +6,7 @@ import java.nio.file.Path
 
 @Serializable
 data class MessageConfig(
-    val prefix: String = "<gradient:dark_green:green><bold>Survival</bold></gradient> <dark_gray>|</dark_gray>  <gray>",
+    val prefix: String = "<gradient:dark_green:green><bold>Survival</bold></gradient> <dark_gray>|</dark_gray> <gray>",
     val noPermission: String = "<prefix><red>You don't have permission to do that!",
     val featureNotFound: String = "<prefix><red><yellow><feature></yellow> has not been found!</red>",
     val featureEnabled: String = "<prefix><feature> <gray>has been <green>enabled</green>!</gray>",
