@@ -11,6 +11,8 @@ import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.StyleBuilderApplicable
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -25,36 +27,27 @@ class FeatureOverview: View(), KoinComponent {
         config.cancelOnClick()
     }
 
-    override fun onClick(click: SlotClickContext) {
-        featureRegistry.forEachIndexed { index, feature ->
-            val statusName = if (feature.enabled) feature.displayName.color(NamedTextColor.GREEN) else feature.displayName.color(NamedTextColor.RED)
-            click.item.name(statusName)
-            click.item
-        }
-    }
-
     override fun onFirstRender(render: RenderContext) {
         featureRegistry.forEachIndexed { index, feature ->
-            val statusName = if (feature.enabled) feature.displayName.color(NamedTextColor.GREEN) else feature.displayName.color(NamedTextColor.RED)
             render.slot(index,
                 if (feature.enabled) {
                     item(Material.GREEN_WOOL) {
-                        name(statusName)
+                        name(feature.displayName.style(Style.empty().edit { it.decoration(TextDecoration.ITALIC, false) }).color(NamedTextColor.GREEN))
                     }
                 } else {
                     item(Material.RED_WOOL) {
-                        name(statusName)
+                        name(feature.displayName.style(Style.empty().edit { it.decoration(TextDecoration.ITALIC, false) }).color(NamedTextColor.RED))
                     }
                 }
             ).onClick { event ->
                 if (!event.player.hasPermission("bettersurvival.feature.toggle.$feature")) return@onClick event.player.sendMessage(!messages.noPermission)
                 if (feature.enabled) {
                     feature.disable()
-                    event.item.name(feature.displayName.style(Style.empty()).color(NamedTextColor.RED))
+                    event.item.name(feature.displayName.style(Style.empty().edit { it.decoration(TextDecoration.ITALIC, false) }).color(NamedTextColor.RED))
                     event.item.type = Material.RED_WOOL
                 } else {
                     feature.enable()
-                    event.item.name(feature.displayName.style(Style.empty()).color(NamedTextColor.GREEN))
+                    event.item.name(feature.displayName.style(Style.empty().edit { it.decoration(TextDecoration.ITALIC, false) }).color(NamedTextColor.GREEN))
                     event.item.type = Material.GREEN_WOOL
                 }
             }

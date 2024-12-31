@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.jetbrains.kotlin.konan.library.impl.createKonanLibraryComponents
+import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
     kotlin("jvm") version "2.1.20-Beta1"
@@ -31,9 +32,9 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.github.revxrsal:lamp.common:4.0.0-beta.25")
-    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-beta.25")
-    implementation("io.github.revxrsal:lamp.brigadier:4.0.0-beta.25")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.2")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.2")
+    implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.2")
     implementation("me.devnatan:inventory-framework-platform-bukkit:3.2.0")
     implementation("me.devnatan:inventory-framework-platform-paper:3.2.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
@@ -52,6 +53,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:4.1.0-Beta1")
     implementation("io.insert-koin:koin-logger-slf4j:4.1.0-Beta1")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
+    compileOnly("net.luckperms:api:5.4")
 }
 
 kotlin {
@@ -95,4 +97,7 @@ paperPluginYaml {
     authors.add("dajooo")
     apiVersion = "1.21"
     website = "https://dario.lol"
+    dependencies {
+        server("LuckPerms", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+    }
 }
