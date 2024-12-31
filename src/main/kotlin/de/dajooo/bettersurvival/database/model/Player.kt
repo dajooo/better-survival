@@ -11,7 +11,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.UUID
 
-object Players: UUIDTable("players") {
+object Players: UUIDTable("players", "players") {
     val name = varchar("name", 16)
     val lastPositionX = double("lastPositionX")
     val lastPositionY = double("lastPositionY")

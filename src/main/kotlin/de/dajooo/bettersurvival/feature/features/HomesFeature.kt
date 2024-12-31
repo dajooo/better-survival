@@ -12,7 +12,7 @@ import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.kaper.extensions.minimessage
 import de.dajooo.kaper.extensions.not
-import de.dajooo.kommons.TypedConfiguration
+import de.dajooo.kaper.extensions.to
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
@@ -36,7 +36,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
     override val description = !"<gray>Adds a homes feature to the plugin.</gray>"
     override val typedConfig = config(Config())
 
-    override val commands = arrayOf<Any>(HomesCommand, SetHomeCommand)
+    override val commands = arrayOf<Any>(HomesCommand, SetHomeCommand, DeleteHomeCommand)
 
     @Command("home", "h")
     object HomesCommand : KoinComponent {
@@ -53,8 +53,9 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
             val home = newSuspendedTransaction {
                 Home.find { Homes.player.eq(player.uniqueId) and Homes.name.eq(name) }.firstOrNull()
-            } ?: return player.sendMessage(minimessage("Home not found."))
+            } ?: return player.sendMessage(!messages.homeNotFound)
             plugin.launch(plugin.minecraftDispatcher) {
+                player.sendMessage(minimessage(messages.homeTeleport, "home" to home.name))
                 player.teleportAsync(home.location)
             }
         }
@@ -82,7 +83,28 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
                     this.location = player.location
                 }
             }
-            player.sendMessage(!"Home has been set.")
+            player.sendMessage(minimessage(messages.homeSet, "home" to name))
         }
     }
+
+    @Command("deletehome", "delhome", "rmhome", "dh", "rmh")
+    object DeleteHomeCommand : KoinComponent {
+        private val messages by inject<MessageConfig>()
+
+        @CommandPlaceholder
+        suspend fun deleteHome(actor: BukkitCommandActor) {
+            deleteHome(actor, "default")
+        }
+
+        @Subcommand("<name>")
+        suspend fun deleteHome(actor: BukkitCommandActor, @SuggestHomes name: String) {
+            val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
+            newSuspendedTransaction {
+                Home.find(Homes.player.eq(player.uniqueId) and Homes.name.eq(name)).first().delete()
+            }
+            player.sendMessage(minimessage(messages.homeRemoved, "home" to name))
+        }
+    }
+
+
 }

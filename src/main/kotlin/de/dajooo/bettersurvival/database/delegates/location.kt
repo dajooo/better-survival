@@ -1,5 +1,8 @@
 package de.dajooo.bettersurvival.database.delegates
 
+import io.papermc.paper.math.BlockPosition
+import io.papermc.paper.math.FinePosition
+import io.papermc.paper.math.Position
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.jetbrains.exposed.dao.Entity
@@ -34,4 +37,45 @@ class LocationDelegate(
     }
 }
 
+class FinePositionDelegate(
+    private val x: Column<Double>,
+    private val y: Column<Double>,
+    private val z: Column<Double>,
+) {
+    operator fun <ID : Comparable<ID>> getValue(entity: Entity<ID>, property: KProperty<*>): FinePosition {
+        return Position.fine(
+            entity.run { x.getValue(this, property) },
+            entity.run { y.getValue(this, property) },
+            entity.run { z.getValue(this, property) },
+        )
+    }
+    operator fun <ID : Comparable<ID>> setValue(entity: Entity<ID>, property: KProperty<*>, value: FinePosition) = entity.apply {
+        x.setValue(entity, property, value.x())
+        y.setValue(entity, property, value.y())
+        z.setValue(entity, property, value.z())
+    }
+}
+
+class BlockPositionDelegate(
+    private val x: Column<Int>,
+    private val y: Column<Int>,
+    private val z: Column<Int>,
+) {
+    operator fun <ID : Comparable<ID>> getValue(entity: Entity<ID>, property: KProperty<*>): BlockPosition {
+        return Position.block(
+            entity.run { x.getValue(this, property) },
+            entity.run { y.getValue(this, property) },
+            entity.run { z.getValue(this, property) },
+        )
+    }
+    operator fun <ID : Comparable<ID>> setValue(entity: Entity<ID>, property: KProperty<*>, value: BlockPosition) = entity.apply {
+        x.setValue(entity, property, value.blockX())
+        y.setValue(entity, property, value.blockY())
+        z.setValue(entity, property, value.blockZ())
+    }
+}
+
 fun location(world: Column<String>, x: Column<Double>, y: Column<Double>, z: Column<Double>, yaw: Column<Float>, pitch: Column<Float>) = LocationDelegate(world, x, y, z, yaw, pitch)
+
+fun finePosition(x: Column<Double>, y: Column<Double>, z: Column<Double>) = FinePositionDelegate(x, y, z)
+fun blockPosition(x: Column<Int>, y: Column<Int>, z: Column<Int>) = BlockPositionDelegate(x, y, z)

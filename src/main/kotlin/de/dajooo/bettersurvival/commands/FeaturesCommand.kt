@@ -28,17 +28,18 @@ object FeaturesCommand : KoinComponent {
     @Subcommand("list", "ls")
     @CommandPermission("bettersurvival.feature.list")
     fun list(actor: BukkitCommandActor) {
-        actor.sender().sendMessage(!"<gray>--- <white>Features</white> <gray>---")
+        actor.sender().sendMessage(!messages.listFeaturesHeader)
         featureRegistry.forEach {
             val statusName = if (it.enabled) it.displayName.color(NamedTextColor.GREEN) else it.displayName.color(NamedTextColor.RED)
             actor.sender().sendMessage(
                 minimessage(
-                    "<gray>-</gray> <status_name> <gray>-</gray> <white><description></white>",
+                    messages.listFeaturesEntry,
                     "status_name" to statusName,
                     "description" to it.description
                 )
             )
         }
+        actor.sender().sendMessage(!messages.listFeaturesFooter)
     }
 
     @Subcommand("enable <feature>")

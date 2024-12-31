@@ -10,6 +10,7 @@ import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.RenderContext
 import me.devnatan.inventoryframework.context.SlotClickContext
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.Style
 import org.bukkit.Material
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -49,11 +50,11 @@ class FeatureOverview: View(), KoinComponent {
                 if (!event.player.hasPermission("bettersurvival.feature.toggle.$feature")) return@onClick event.player.sendMessage(!messages.noPermission)
                 if (feature.enabled) {
                     feature.disable()
-                    event.item.name(feature.displayName.color(NamedTextColor.RED))
+                    event.item.name(feature.displayName.style(Style.empty()).color(NamedTextColor.RED))
                     event.item.type = Material.RED_WOOL
                 } else {
                     feature.enable()
-                    event.item.name(feature.displayName.color(NamedTextColor.GREEN))
+                    event.item.name(feature.displayName.style(Style.empty()).color(NamedTextColor.GREEN))
                     event.item.type = Material.GREEN_WOOL
                 }
             }

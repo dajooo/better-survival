@@ -9,9 +9,10 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-suspend fun connectDatabase() {
-    Database.connect(createDataSourceFromConfigurable(getKoin().get<Config>().database))
+suspend fun connectDatabase(): Database {
+    val db = Database.connect(createDataSourceFromConfigurable(getKoin().get<Config>().database))
     newSuspendedTransaction {
         SchemaUtils.createMissingTablesAndColumns(Players, Homes)
     }
+    return db
 }

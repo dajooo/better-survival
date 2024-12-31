@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 
-object Homes : IntIdTable("homes") {
+object Homes : IntIdTable("homes", "homes") {
     val name = varchar("name", 255)
     val x = double("x")
     val y = double("y")

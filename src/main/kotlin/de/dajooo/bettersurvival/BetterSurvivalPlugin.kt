@@ -14,19 +14,26 @@ import de.dajooo.bettersurvival.listeners.VisualsListener
 import de.dajooo.kaper.KotlinPlugin
 import de.dajooo.kaper.extensions.pluginManager
 import de.dajooo.kommons.TypedYamlConfiguration
+import de.dajooo.kommons.koin.get
+import de.dajooo.kommons.koin.loadModule
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.oshai.kotlinlogging.slf4j.logger
 import me.devnatan.inventoryframework.ViewFrame
 import org.bukkit.plugin.java.JavaPlugin
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import javax.xml.crypto.Data
 import kotlin.math.sin
 
 class BetterSurvivalPlugin : KotlinPlugin() {
 
     override fun enable() {
+        pluginManager.registerEvents(VisualsListener, this)
+        pluginManager.registerSuspendingEvents(DatabaseListener, this)
         startKoin {
             modules(module(createdAtStart = true) {
                 single { this@BetterSurvivalPlugin } bind JavaPlugin::class
@@ -40,14 +47,16 @@ class BetterSurvivalPlugin : KotlinPlugin() {
                 single { registerCommands() }
             })
         }
-        pluginManager.registerEvents(VisualsListener, this)
-        pluginManager.registerSuspendingEvents(DatabaseListener, this)
     }
 
     override suspend fun enableSuspending() {
-        connectDatabase()
+        val db = connectDatabase()
+        loadModule {
+            single { db }
+        }
     }
 
     override fun onDisable() {
+        TransactionManager.closeAndUnregister(get())
     }
 }
