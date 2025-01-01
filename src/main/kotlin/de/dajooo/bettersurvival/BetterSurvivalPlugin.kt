@@ -11,6 +11,7 @@ import de.dajooo.bettersurvival.feature.FeatureRegistry
 import de.dajooo.bettersurvival.gui.feature.FeatureOverview
 import de.dajooo.bettersurvival.listeners.DatabaseListener
 import de.dajooo.bettersurvival.listeners.VisualsListener
+import de.dajooo.bettersurvival.player.PlayerRegistry
 import de.dajooo.kaper.KotlinPlugin
 import de.dajooo.kaper.extensions.pluginManager
 import de.dajooo.kommons.TypedYamlConfiguration
@@ -43,6 +44,7 @@ class BetterSurvivalPlugin : KotlinPlugin() {
                 single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
                 single { KotlinLogging.logger(slF4JLogger) }
                 single { FeatureRegistry().init() }
+                single { PlayerRegistry().init() }
                 single { ViewFrame.create(this@BetterSurvivalPlugin).with(FeatureOverview()).register() }
                 single { registerCommands() }
                 single {
@@ -64,5 +66,15 @@ class BetterSurvivalPlugin : KotlinPlugin() {
 
     override fun onDisable() {
         TransactionManager.closeAndUnregister(get())
+    }
+
+    override fun reloadConfig() {
+        loadModule {
+            single { loadConfig(dataPath) }
+            single { get<TypedYamlConfiguration<Config>>().get() }
+            single(named("messages")) { loadMessageConfig(dataPath) }
+            single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+        }
+        super.reloadConfig()
     }
 }

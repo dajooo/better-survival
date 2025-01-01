@@ -1,6 +1,8 @@
 package de.dajooo.bettersurvival.listeners
 
 import de.dajooo.bettersurvival.config.MessageConfig
+import de.dajooo.bettersurvival.player.BetterSurvivalPlayer
+import de.dajooo.bettersurvival.player.PlayerRegistry
 import de.dajooo.kaper.event.MiniMessageBuildEvent
 import de.dajooo.kaper.extensions.mini
 import de.dajooo.kaper.extensions.minimessage
@@ -23,7 +25,7 @@ import java.util.concurrent.CompletableFuture
 
 object VisualsListener: Listener, KoinComponent {
     private val messages by inject<MessageConfig>()
-    private val luckPerms by inject<LuckPerms>()
+    private val playerRegistry by inject<PlayerRegistry>()
 
     @EventHandler
     fun miniMessageBuilderHook(event: MiniMessageBuildEvent) {
@@ -34,22 +36,8 @@ object VisualsListener: Listener, KoinComponent {
 
     @EventHandler
     fun handlePlayerJoin(event: PlayerJoinEvent) {
-        val userManager = luckPerms.userManager
-        val user = userManager.getUser(event.player.uniqueId)
-        event.player.displayName(
-            user?.cachedData?.metaData?.prefix?.mini()?.append(event.player.name())?.append {
-                if (user.cachedData.metaData.suffix != null)
-                       user.cachedData.metaData.suffix!!.mini()
-                else
-                       Component.empty()
-            })
-        event.player.playerListName(
-            user?.cachedData?.metaData?.prefix?.mini()?.append(event.player.name())?.append {
-                if (user.cachedData.metaData.suffix != null)
-                    user.cachedData.metaData.suffix!!.mini()
-                else
-                    Component.empty()
-            })
+        val survivalPlayer = playerRegistry.registerPlayer(event.player)
+        survivalPlayer.applyNametag()
         event.joinMessage(minimessage(messages.joinMessage, "name" to event.player.displayName()))
     }
 

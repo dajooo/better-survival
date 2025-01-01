@@ -42,7 +42,7 @@ fun registerCommands(): Lamp<BukkitCommandActor> = withKoin {
         }
         .build();
 
-    lamp.register(FeaturesCommand)
+    lamp.register(FeaturesCommand, BetterSurvivalCommand)
 
     return@withKoin lamp
 }
