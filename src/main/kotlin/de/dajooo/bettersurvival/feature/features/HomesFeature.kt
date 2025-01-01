@@ -5,18 +5,13 @@ import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.commands.suggestions.SuggestHomes
 import de.dajooo.bettersurvival.config.MessageConfig
-import de.dajooo.bettersurvival.database.model.Home
-import de.dajooo.bettersurvival.database.model.Homes
-import de.dajooo.bettersurvival.database.model.PlayerEntity
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.player.survivalPlayer
 import de.dajooo.kaper.extensions.minimessage
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import revxrsal.commands.annotation.Command
@@ -36,10 +31,36 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
     override val description = !"<gray>Adds a homes feature to the plugin.</gray>"
     override val typedConfig = config(Config())
 
-    override val commands = arrayOf<Any>(HomesCommand, SetHomeCommand, DeleteHomeCommand)
+    override val commands = arrayOf<Any>(HomeCommand, SetHomeCommand, DeleteHomeCommand)
+
+    @Command("homes", "home list", "home ls")
+    object HomesCommand : KoinComponent {
+        private val messages by inject<MessageConfig>()
+        private val plugin by inject<BetterSurvivalPlugin>()
+
+        @CommandPlaceholder
+        suspend fun homes(actor: BukkitCommandActor) {
+            val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
+            player.sendMessage(messages.homeListHeader)
+            player.survivalPlayer.homes().forEach {
+                player.sendMessage(
+                    minimessage(
+                        messages.homeListEntry,
+                        "home" to it.name,
+                        "x" to it.location.blockX,
+                        "y" to it.location.blockY,
+                        "z" to it.location.blockZ,
+                        "world" to it.location.world.name
+                    )
+                )
+            }
+            player.sendMessage(!messages.homeListFooter)
+        }
+
+    }
 
     @Command("home", "h")
-    object HomesCommand : KoinComponent {
+    object HomeCommand : KoinComponent {
         private val messages by inject<MessageConfig>()
         private val plugin by inject<BetterSurvivalPlugin>()
 
@@ -51,9 +72,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         @Subcommand("<name>")
         suspend fun home(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
-            val home = newSuspendedTransaction {
-                Home.find { Homes.player.eq(player.uniqueId) and Homes.name.eq(name) }.firstOrNull()
-            } ?: return player.sendMessage(!messages.homeNotFound)
+            val home = player.survivalPlayer.home(name) ?: return player.sendMessage(!messages.homeNotFound)
             plugin.launch(plugin.minecraftDispatcher) {
                 player.sendMessage(minimessage(messages.homeTeleport, "home" to home.name))
                 player.teleportAsync(home.location)
@@ -73,16 +92,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         @Subcommand("<name>")
         suspend fun setHome(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
-            newSuspendedTransaction {
-                val databasePlayer = PlayerEntity.findById(player.uniqueId) ?: return@newSuspendedTransaction actor.sender().sendMessage("Error retrieving user from database.")
-                Home.findSingleByAndUpdate(Homes.player.eq(player.uniqueId) and Homes.name.eq(name)) {
-                    it.location = player.location
-                } ?: Home.new {
-                    this.name = name
-                    this.player = databasePlayer
-                    this.location = player.location
-                }
-            }
+            player.survivalPlayer.upsertHomeLocation(name)
             player.sendMessage(minimessage(messages.homeSet, "home" to name))
         }
     }
@@ -99,9 +109,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         @Subcommand("<name>")
         suspend fun deleteHome(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
-            newSuspendedTransaction {
-                Home.find(Homes.player.eq(player.uniqueId) and Homes.name.eq(name)).first().delete()
-            }
+            player.survivalPlayer.home(name)?.delete()
             player.sendMessage(minimessage(messages.homeRemoved, "home" to name))
         }
     }

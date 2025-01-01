@@ -27,6 +27,9 @@ data class MessageConfig(
     val leaveMessage: String = "<dark_gray>[<green>+</green>]</dark_gray> <gold><name>",
     val chatFormat: String = "<display_name><dark_gray>:</dark_gray> <gray><message></gray>",
     val motd: String = "<prefix>Minecraft Server<reset>",
+    val homeListHeader: String = "<gray>--- <white>Homes</white> <gray>---",
+    val homeListEntry: String = "<gray>-</gray> <white><home></white> <gray>(<x>, <y>, <z>) <white><world></white>",
+    val homeListFooter: String = "<gray>--- <white>Homes</white> <gray>---",
 )
 
 fun loadMessageConfig(basePath: Path) = loadYamlConfig(basePath.resolve("messages.yaml"), MessageConfig())

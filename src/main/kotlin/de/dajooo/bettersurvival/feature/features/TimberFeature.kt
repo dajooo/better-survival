@@ -22,18 +22,18 @@ import org.bukkit.inventory.meta.Damageable
 import org.koin.core.component.inject
 
 class TimberFeature : AbstractFeature<TimberFeature.Config>() {
-    private val plugin by inject<BetterSurvivalPlugin>()
-
-    override val typedConfig = config(Config())
-    override val name = "timber"
-    override val displayName = !"<gold>Timber</gold>"
-    override val description = !"<gray>Breaks connected logs and leaves"
-
     @Serializable
     data class Config(
         override var enabled: Boolean = true,
         var limit: Int = 512,
     ): FeatureConfig
+
+    private val plugin by inject<BetterSurvivalPlugin>()
+
+    override val typedConfig = config(Config())
+    override val name = "timber"
+    override val displayName = !"<gold>Timber</gold>"
+    override val description = !"<gray>Breaks connected logs and leaves.</gray>"
 
     private val logToLeaveMap = mapOf(
         Material.SPRUCE_LOG to Material.SPRUCE_LEAVES,

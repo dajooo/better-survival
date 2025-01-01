@@ -1,12 +1,16 @@
 package de.dajooo.bettersurvival.feature
 
+import de.dajooo.bettersurvival.feature.features.CropRightClickFeature
 import de.dajooo.bettersurvival.feature.features.HomesFeature
+import de.dajooo.bettersurvival.feature.features.SaplingTwerkFeature
 import de.dajooo.bettersurvival.feature.features.TimberFeature
 
 class FeatureRegistry : MutableIterable<Feature<*>> {
     private val features: MutableList<Feature<*>> = mutableListOf(
         TimberFeature(),
-        HomesFeature()
+        HomesFeature(),
+        CropRightClickFeature(),
+        SaplingTwerkFeature(),
     )
 
     fun init(): FeatureRegistry {
