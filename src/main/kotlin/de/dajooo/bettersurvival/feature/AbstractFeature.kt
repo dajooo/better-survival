@@ -26,7 +26,7 @@ abstract class AbstractFeature<C : FeatureConfig>: Feature<C>, KoinComponent, Li
     open val commands: Array<Any> = arrayOf()
     private val lampCommands = mutableListOf<ExecutableCommand<BukkitCommandActor>>()
 
-    protected inline fun <reified T: FeatureConfig> config(value: T) = loadYamlConfig(_plugin.dataPath.resolve("features", "$name.yaml"), value)
+    protected inline fun <reified T: FeatureConfig> config(value: T) = loadYamlConfig(_plugin.dataPath.resolve("features").resolve("$name.yaml"), value)
 
     override fun enable() {
         this.config.enabled = true

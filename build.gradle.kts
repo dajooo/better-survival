@@ -1,5 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import org.jetbrains.kotlin.konan.library.impl.createKonanLibraryComponents
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
@@ -58,6 +58,7 @@ dependencies {
 
 kotlin {
     jvmToolchain(23)
+
 }
 
 tasks.build {
@@ -76,13 +77,16 @@ tasks.processResources {
 tasks.withType<JavaCompile> {
     // Preserve parameter names in the bytecode
     options.compilerArgs.add("-parameters")
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
 }
 
-// optional: if you're using Kotlin
 tasks.withType<KotlinJvmCompile> {
     compilerOptions {
         javaParameters = true
+        jvmTarget = JvmTarget.JVM_21
     }
+
 }
 
 tasks {
