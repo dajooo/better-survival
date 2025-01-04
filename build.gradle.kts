@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
@@ -7,11 +8,10 @@ plugins {
     id("com.gradleup.shadow") version "9.0.0-beta4"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
-    `maven-publish`
 }
 
 group = "de.dajooo"
-version = properties["version"] ?: "0.1.0-SNAPSHOT"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -57,30 +57,39 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(23)
+
+}
+
+tasks.build {
+    dependsOn("shadowJar")
+}
+
+tasks.processResources {
+    val props = mapOf("version" to version)
+    inputs.properties(props)
+    filteringCharset = "UTF-8"
+    filesMatching("paper-plugin.yml") {
+        expand(props)
+    }
+}
+
+tasks.withType<JavaCompile> {
+    // Preserve parameter names in the bytecode
+    options.compilerArgs.add("-parameters")
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
+}
+
+tasks.withType<KotlinJvmCompile> {
+    compilerOptions {
+        javaParameters = true
+        jvmTarget = JvmTarget.JVM_21
+    }
+
 }
 
 tasks {
-    build {
-        dependsOn("shadowJar")
-    }
-    processResources {
-        val props = mapOf("version" to version)
-        inputs.properties(props)
-        filteringCharset = "UTF-8"
-        filesMatching("paper-plugin.yml") {
-            expand(props)
-        }
-    }
-    withType<JavaCompile> {
-        // Preserve parameter names in the bytecode
-        options.compilerArgs.add("-parameters")
-    }
-    withType<KotlinJvmCompile> {
-        compilerOptions {
-            javaParameters = true
-        }
-    }
     runServer {
         minecraftVersion("1.21.4")
     }
@@ -94,34 +103,5 @@ paperPluginYaml {
     website = "https://dario.lol"
     dependencies {
         server("LuckPerms", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
-    }
-}
-
-publishing {
-    repositories {
-        val isSnapshot = project.version.toString().endsWith("-SNAPSHOT")
-        maven {
-            name = if(isSnapshot) "dajoooPublicSnapshots" else "dajoooPublicReleases"
-            url = uri(if(isSnapshot) {
-                "https://repo.dajooo.de/public-snapshots"
-            } else {
-                "https://repo.dajooo.de/public-releases"
-            })
-            credentials {
-                username = (System.getenv("MAVEN_USERNAME") ?: findProperty("mavenUsername")).toString()
-                password = (System.getenv("MAVEN_PASSWORD") ?: findProperty("mavenPassword")).toString()
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            artifactId = project.name
-            groupId = project.group.toString()
-            version = project.version.toString()
-        }
     }
 }
