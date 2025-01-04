@@ -48,23 +48,25 @@ class FeatureOverview : View(), KoinComponent {
                         }
                     }
                 }
-            ).onClick { event ->
-                if (!event.player.hasPermission("bettersurvival.feature.toggle.$feature")) return@onClick event.player.sendMessage(
+            ).onClick { context ->
+                if (!context.player.hasPermission("bettersurvival.feature.toggle.$feature")) return@onClick context.player.sendMessage(
                     !messages.noPermission
                 )
                 if (feature.enabled) {
                     feature.disable()
-                    event.item.name(feature.displayName.withoutItalic().color(NamedTextColor.RED))
-                    event.item.type = Material.RED_WOOL
-                    event.item.meta {
-                        lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                    context.clickOrigin.currentItem = context.item.withType(Material.RED_WOOL).apply {
+                        name(feature.displayName.withoutItalic().color(NamedTextColor.RED))
+                        meta {
+                            lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                        }
                     }
                 } else {
                     feature.enable()
-                    event.item.name(feature.displayName.withoutItalic().color(NamedTextColor.GREEN))
-                    event.item.type = Material.GREEN_WOOL
-                    event.item.meta {
-                        lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                    context.clickOrigin.currentItem = context.item.withType(Material.GREEN_WOOL).apply {
+                        name(feature.displayName.withoutItalic().color(NamedTextColor.GREEN))
+                        meta {
+                            lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                        }
                     }
                 }
             }

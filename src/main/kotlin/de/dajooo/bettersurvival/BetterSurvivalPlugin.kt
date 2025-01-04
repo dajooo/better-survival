@@ -12,6 +12,7 @@ import de.dajooo.bettersurvival.gui.feature.FeatureOverview
 import de.dajooo.bettersurvival.listeners.DatabaseListener
 import de.dajooo.bettersurvival.listeners.VisualsListener
 import de.dajooo.bettersurvival.player.PlayerRegistry
+import de.dajooo.bettersurvival.updater.Updater
 import de.dajooo.kaper.KotlinPlugin
 import de.dajooo.kaper.extensions.pluginManager
 import de.dajooo.kommons.TypedYamlConfiguration
@@ -20,7 +21,6 @@ import de.dajooo.kommons.koin.loadModule
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.oshai.kotlinlogging.slf4j.logger
 import me.devnatan.inventoryframework.ViewFrame
-import net.luckperms.api.LuckPerms
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -28,7 +28,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
-
 
 class BetterSurvivalPlugin : KotlinPlugin() {
 
@@ -47,13 +46,22 @@ class BetterSurvivalPlugin : KotlinPlugin() {
                 single { PlayerRegistry().init() }
                 single { ViewFrame.create(this@BetterSurvivalPlugin).with(FeatureOverview()).register() }
                 single { registerCommands() }
-                single {
-                    val provider = Bukkit.getServicesManager().getRegistration(
-                        LuckPerms::class.java
-                    )
-                    provider?.provider
+                if(isClassAvailable("net.luckperms.api.LuckPerms")) {
+                    single {
+                        val provider = Bukkit.getServicesManager().getRegistration(Class.forName("net.luckperms.api.LuckPerms"))
+                        provider?.provider
+                    }
                 }
             })
+        }
+    }
+
+    private fun isClassAvailable(className: String): Boolean {
+        try {
+            Class.forName(className)
+            return true
+        } catch (e: ClassNotFoundException) {
+            return false
         }
     }
 
@@ -61,6 +69,9 @@ class BetterSurvivalPlugin : KotlinPlugin() {
         val db = connectDatabase()
         loadModule {
             single { db }
+        }
+        if(Updater.updateAvailable()) {
+            logger.warning { "AN UPDATE IS AVAILABLE! TYPE \"/bs update\" and restart your server or update manually by downloading the latest release from https://github.com/dajooo/better-survival/tags" }
         }
     }
 
