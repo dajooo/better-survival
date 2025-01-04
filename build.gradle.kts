@@ -105,7 +105,7 @@ publishing {
             url = uri(if(isSnapshot) {
                 "https://repo.dajooo.de/public-snapshots"
             } else {
-                "https://repo.dajooo.de/releases"
+                "https://repo.dajooo.de/public-releases"
             })
             credentials {
                 username = (System.getenv("MAVEN_USERNAME") ?: findProperty("mavenUsername")).toString()
