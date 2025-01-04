@@ -23,6 +23,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Install semantic-release
         run: |
           npm install -g semantic-release
