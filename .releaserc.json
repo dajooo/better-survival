@@ -2,8 +2,12 @@
   "branches": [
     "main",
     {
+      "name": "dev",
+      "prerelease": "beta"
+    },
+    {
       "name": "*",
-      "prerelease": "${name}-SNAPSHOT"
+      "prerelease": "alpha"
     }
   ],
   "plugins": [
