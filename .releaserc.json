@@ -10,7 +10,7 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     ["@semantic-release/exec", {
-      "prepareCmd": "VERSION=${nextRelease.version} ./gradlew --no-daemon publish"
+      "prepareCmd": "VERSION=${nextRelease.version} ./gradlew --no-daemon build"
     }],
     ["@semantic-release/github", {
       "assets": "build/libs/*.jar"
