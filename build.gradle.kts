@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "de.dajooo"
-version = System.getenv("VERSION") ?: "0.1.0-SNAPSHOT"
+version = properties["version"] ?: "0.1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
