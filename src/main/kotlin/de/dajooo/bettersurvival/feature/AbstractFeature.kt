@@ -32,7 +32,6 @@ abstract class AbstractFeature<C : FeatureConfig>: Feature<C>, KoinComponent, Li
         onEnable()
     }
 
-
     override fun disable() {
         this.config.enabled = false
         this.typedConfig.set(this.config)

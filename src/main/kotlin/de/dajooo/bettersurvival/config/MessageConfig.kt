@@ -31,7 +31,7 @@ data class MessageConfig(
     val homeListEntry: String = "<gray>-</gray> <white><home></white> <gray>(<x>, <y>, <z>) <white><world></white>",
     val homeListFooter: String = "<gray>--- <white>Homes</white> <gray>---",
     val playersSleeping: String = "<prefix><gray><sleeping>/<max_sleeping> [<percentage>%] players are sleeping in <world>.",
-    val morning: String = "<prefix> Good morning!",
+    val morning: String = "<prefix>Good morning!",
 )
 
 fun loadMessageConfig(basePath: Path) = loadYamlConfig(basePath.resolve("messages.yaml"), MessageConfig())
