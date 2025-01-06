@@ -1,6 +1,8 @@
 package de.dajooo.bettersurvival.updater
 
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
+import de.dajooo.bettersurvival.config.Config
+import de.dajooo.bettersurvival.config.UpdateChannel
 import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -18,6 +20,7 @@ import kotlin.io.path.*
 
 object Updater : KoinComponent {
     private val plugin by inject<BetterSurvivalPlugin>()
+    private val config by inject<Config>()
     private val logger by inject<KLogger>()
     private val httpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
@@ -39,11 +42,16 @@ object Updater : KoinComponent {
         return httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases") {
             accept(ContentType("application", "vnd.github.v3+json"))
             header("X-GitHub-Api-Version", "2022-11-28")
-        }.body<List<GithubRelease>>().first { it.prerelease }
+        }.body<List<GithubRelease>>().filter {
+            if (config.updateChannel == UpdateChannel.BETA) Semver.parse(it.tagName)?.preRelease?.first() == "beta"
+            else Semver.parse(it.tagName)?.preRelease?.first() == "alpha"
+        }.first { it.prerelease }
     }
 
     suspend fun updateAvailable(): Boolean {
-        val release = fetchLatestPrerelease()
+        val release = if (config.updateChannel == UpdateChannel.RELEASE) {
+            fetchLatestRelease()
+        } else fetchLatestPrerelease()
         return Semver.parse(release.tagName)?.isGreaterThan(plugin.pluginMeta.version) ?: false
     }
 
