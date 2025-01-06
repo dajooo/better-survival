@@ -1,3 +1,10 @@
+# [1.0.0-beta.5](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2025-01-06)
+
+
+### Bug Fixes
+
+* compilation error ([a203d3a](https://github.com/dajooo/better-survival/commit/a203d3a19c253f02a5c8dc7745adec816334d201))
+
 # [1.0.0-beta.4](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2025-01-06)
 
 
