@@ -1,3 +1,10 @@
+# [1.0.0-beta.9](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2025-01-06)
+
+
+### Bug Fixes
+
+* disable player quit last position save ([c8e23eb](https://github.com/dajooo/better-survival/commit/c8e23ebd572cf125be960e9eaaccc5be48c22162))
+
 # [1.0.0-beta.8](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2025-01-06)
 
 
