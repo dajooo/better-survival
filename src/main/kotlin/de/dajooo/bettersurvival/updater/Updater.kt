@@ -30,28 +30,34 @@ object Updater : KoinComponent {
         }
     }
 
-    private suspend fun fetchLatestRelease(): GithubRelease {
-        return httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases/latest") {
-            accept(ContentType("application", "vnd.github.v3+json"))
-            bearerAuth("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")
-            header("X-GitHub-Api-Version", "2022-11-28")
-        }.body<GithubRelease>()
+    private suspend fun fetchLatestRelease(): GithubRelease? {
+        return runCatching {
+            httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases/latest") {
+                accept(ContentType("application", "vnd.github.v3+json"))
+                bearerAuth("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")
+                header("X-GitHub-Api-Version", "2022-11-28")
+            }.body<GithubRelease>()
+        }.getOrNull()
     }
 
-    private suspend fun fetchLatestPrerelease(): GithubRelease {
+    private suspend fun fetchLatestPrerelease(): GithubRelease? {
         return httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases") {
             accept(ContentType("application", "vnd.github.v3+json"))
             header("X-GitHub-Api-Version", "2022-11-28")
         }.body<List<GithubRelease>>().filter {
             if (config.updateChannel == UpdateChannel.BETA) Semver.parse(it.tagName)?.preRelease?.first() == "beta"
             else Semver.parse(it.tagName)?.preRelease?.first() == "alpha"
-        }.first { it.prerelease }
+        }.firstOrNull { it.prerelease }
     }
 
     suspend fun updateAvailable(): Boolean {
         val release = if (config.updateChannel == UpdateChannel.RELEASE) {
             fetchLatestRelease()
         } else fetchLatestPrerelease()
+        if (release == null) {
+            logger.debug { "No release found" }
+            return false
+        }
         return Semver.parse(release.tagName)?.isGreaterThan(plugin.pluginMeta.version) ?: false
     }
 
