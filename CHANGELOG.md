@@ -1,3 +1,10 @@
+# [1.0.0-beta.6](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2025-01-06)
+
+
+### Bug Fixes
+
+* set last position when player uses /home ([c42f64e](https://github.com/dajooo/better-survival/commit/c42f64ee8641a8153d2bd4309c172b638d1bc923))
+
 # [1.0.0-beta.5](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2025-01-06)
 
 
