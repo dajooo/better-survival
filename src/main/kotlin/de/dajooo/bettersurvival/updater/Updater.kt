@@ -8,14 +8,12 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.semver4j.Semver
-import java.nio.file.Path
 import kotlin.io.path.*
 
 object Updater : KoinComponent {
@@ -54,7 +52,9 @@ object Updater : KoinComponent {
         val release = fetchLatestPrerelease()
         val asset = release.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
         val downloadUrl = asset.browserDownloadUrl
-        val file = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
+        val oldPlugin = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
+        val file = Path(asset.name)
+        val rootDir = Path(".")
         val httpResponse = httpClient.get(Url(downloadUrl)) {
             onDownload { bytesSentTotal, contentLength ->
                 logger.debug { "Received $bytesSentTotal bytes from $contentLength" }
@@ -62,6 +62,8 @@ object Updater : KoinComponent {
         }
         val responseBody: ByteArray = httpResponse.body()
         file.writeBytes(responseBody)
-        logger.debug { "A file saved to ${file.relativeTo(Path("."))}" }
+        logger.debug { "A file saved to ${file.relativeTo(rootDir)}" }
+        oldPlugin.moveTo(Path("${oldPlugin.fileName}.old"))
+        logger.debug { "Moved old plugin to ${oldPlugin.relativeTo(rootDir)}.old" }
     }
 }
