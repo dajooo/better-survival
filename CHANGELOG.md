@@ -1,3 +1,10 @@
+# [1.0.0-alpha.4](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2025-01-06)
+
+
+### Bug Fixes
+
+* disable old plugin and download new instead of overriding old plugin ([eb449ce](https://github.com/dajooo/better-survival/commit/eb449ce11c19d920ba1398fece3cab91542d4930))
+
 # [1.0.0-alpha.3](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2025-01-06)
 
 
