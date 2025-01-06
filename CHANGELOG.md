@@ -1,3 +1,16 @@
+# [1.0.0-beta.3](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2025-01-06)
+
+
+### Bug Fixes
+
+* timber ([220b865](https://github.com/dajooo/better-survival/commit/220b86586e0f853035abafb39487c49400c46382))
+
+
+### Features
+
+* better beds feature ([c8db849](https://github.com/dajooo/better-survival/commit/c8db8498e1bf83ef9ae2a5b6200cf10d57032059))
+* better recipes ([cbcd3f5](https://github.com/dajooo/better-survival/commit/cbcd3f55a3f0c144d91dc432cdeb1d8040ba09f2))
+
 # [1.0.0-beta.2](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-01-06)
 
 
