@@ -8,9 +8,7 @@ import de.dajooo.kaper.extensions.addXZ
 import de.dajooo.kaper.extensions.isTagged
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.remXZ
-import de.dajooo.kommons.TypedConfiguration
 import kotlinx.serialization.Serializable
-import net.kyori.adventure.text.Component
 import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerToggleSneakEvent

@@ -1,15 +1,11 @@
 package de.dajooo.bettersurvival.database.model
 
 import de.dajooo.bettersurvival.database.delegates.location
-import de.dajooo.kommons.exposed.nanoid.NanoIdEntity
-import de.dajooo.kommons.exposed.nanoid.NanoIdEntityClass
-import de.dajooo.kommons.nanoid.NanoId
-import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
-import java.util.UUID
+import java.util.*
 
 object Players: UUIDTable("players", "players") {
     val name = varchar("name", 16)

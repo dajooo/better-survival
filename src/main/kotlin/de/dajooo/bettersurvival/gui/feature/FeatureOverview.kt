@@ -10,11 +10,7 @@ import de.dajooo.kaper.item.name
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.RenderContext
-import me.devnatan.inventoryframework.context.SlotClickContext
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.Style
-import net.kyori.adventure.text.format.StyleBuilderApplicable
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

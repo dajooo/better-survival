@@ -8,7 +8,6 @@ import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.kaper.extensions.not
-import de.dajooo.kommons.TypedConfiguration
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import org.bukkit.Material

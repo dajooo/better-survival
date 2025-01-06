@@ -1,11 +1,7 @@
 package de.dajooo.bettersurvival.feature
 
 import de.dajooo.kaper.extensions.pluginManager
-import de.dajooo.kommons.TypedConfiguration
-import de.dajooo.kommons.TypedYamlConfiguration
 import de.dajooo.kommons.loadYamlConfig
-import org.bukkit.Bukkit
-import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -14,7 +10,6 @@ import org.koin.core.component.inject
 import revxrsal.commands.Lamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.command.ExecutableCommand
-import kotlin.reflect.full.createType
 
 abstract class AbstractFeature<C : FeatureConfig>: Feature<C>, KoinComponent, Listener {
     protected val _plugin by inject<JavaPlugin>()

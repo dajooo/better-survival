@@ -6,9 +6,7 @@ import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.kaper.extensions.isTagged
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.tagKeyFor
-import de.dajooo.kommons.TypedConfiguration
 import kotlinx.serialization.Serializable
-import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.block.data.Ageable
 import org.bukkit.event.EventHandler
