@@ -35,8 +35,8 @@ dependencies {
     implementation(libs.lamp.common)
     implementation(libs.lamp.bukkit)
     implementation(libs.lamp.brigadier)
-    implementation(libs.inventory.framework.bukkit)
-    implementation(libs.inventory.framework.paper)
+    compileOnly(libs.inventory.framework.bukkit)
+    compileOnly(libs.inventory.framework.paper)
     implementation(libs.mccoroutine.api)
     implementation(libs.mccoroutine.core)
     implementation(libs.coroutines)
@@ -99,6 +99,7 @@ paperPluginYaml {
     website = "https://dario.lol"
     dependencies {
         server("LuckPerms", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server("InventoryFramework", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
     }
 }
 
