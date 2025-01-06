@@ -10,12 +10,14 @@ import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.kaper.extensions.not
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.data.type.Leaves
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.koin.core.component.inject
@@ -29,10 +31,10 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
 
     private val plugin by inject<BetterSurvivalPlugin>()
 
-    override val typedConfig = config(Config())
     override val name = "timber"
     override val displayName = !"<gold>Timber</gold>"
     override val description = !"<gray>Breaks connected logs and leaves.</gray>"
+    override val typedConfig = config(Config())
 
     private val logToLeaveMap = mapOf(
         Material.SPRUCE_LOG to Material.SPRUCE_LEAVES,
@@ -43,6 +45,22 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
         Material.OAK_LOG to Material.OAK_LEAVES,
         Material.MANGROVE_LOG to Material.MANGROVE_LEAVES,
     )
+
+
+    private val playerActionbarBuffer = mutableListOf<Player>()
+
+    @EventHandler
+    fun handleMove(event: PlayerMoveEvent) {
+        val targetBlock = event.player.getTargetBlock(setOf(Material.AIR), 5)
+        if(MaterialSetTag.LOGS.isTagged(targetBlock.type) && event.player.isSneaking) {
+            event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} logs</red>")
+            playerActionbarBuffer.add(event.player)
+            return
+        }
+        if(playerActionbarBuffer.contains(event.player) && (!MaterialSetTag.LOGS.isTagged(targetBlock.type) || !event.player.isSneaking)) {
+            event.player.sendActionBar(Component.empty())
+        }
+    }
 
    @EventHandler
    fun handleBockBreak(event: BlockBreakEvent) {
