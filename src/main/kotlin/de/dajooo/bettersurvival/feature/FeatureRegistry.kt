@@ -9,6 +9,7 @@ class FeatureRegistry : MutableIterable<Feature<*>> {
         CropRightClickFeature(),
         SaplingTwerkFeature(),
         CustomRecipesFeature(),
+        BetterBedsFeature(),
     )
 
     fun init(): FeatureRegistry {
