@@ -24,11 +24,11 @@ object DatabaseListener: Listener {
 
     @EventHandler
     suspend fun handlePlayerQuit(event: PlayerQuitEvent) {
-        newSuspendedTransaction {
+        /*newSuspendedTransaction {
             PlayerEntity.findByIdAndUpdate(event.player.uniqueId) {
                 it.lastPosition = event.player.location
             }
-        }
+        }*/
     }
     @EventHandler
     suspend fun handlePlayerDeath(event: PlayerDeathEvent) {
