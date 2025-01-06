@@ -53,7 +53,7 @@ object Updater : KoinComponent {
         val asset = release.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
         val downloadUrl = asset.browserDownloadUrl
         val oldPlugin = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
-        val file = Path(asset.name)
+        val file = plugin.dataPath.resolve(asset.name)
         val rootDir = Path(".")
         val httpResponse = httpClient.get(Url(downloadUrl)) {
             onDownload { bytesSentTotal, contentLength ->
@@ -64,7 +64,7 @@ object Updater : KoinComponent {
         val responseBody: ByteArray = httpResponse.body()
         file.writeBytes(responseBody)
         logger.debug { "A file saved to ${file.relativeTo(rootDir)}" }
-        oldPlugin.moveTo(Path("${oldPlugin.fileName}.old"))
+        oldPlugin.moveTo(oldPlugin.parent.resolve("${oldPlugin.fileName}.old"))
         logger.debug { "Moved old plugin to ${oldPlugin.relativeTo(rootDir)}.old" }
     }
 }

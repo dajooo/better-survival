@@ -25,6 +25,9 @@ object BetterSurvivalCommand: KoinComponent {
     @Subcommand("update")
     @CommandPermission("bettersurvival.command.update")
     suspend fun update(actor: BukkitCommandActor) {
+        if (!Updater.updateAvailable()) {
+            actor.sender().sendMessage(!"<green>You are already on the latest version!")
+        }
         actor.sender().sendMessage(!"<red>Starting update...")
         Updater.update()
         actor.sender().sendMessage(!"<red>Update was completed. Restart your server now for the changes to apply!")
