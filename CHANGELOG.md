@@ -1,3 +1,10 @@
+# [1.0.0-beta.7](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-01-06)
+
+
+### Bug Fixes
+
+* updater output path ([d44b307](https://github.com/dajooo/better-survival/commit/d44b307f7e234d458ebf80039f164beec5008443))
+
 # [1.0.0-beta.6](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2025-01-06)
 
 
