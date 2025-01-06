@@ -57,6 +57,7 @@ object Updater : KoinComponent {
         val rootDir = Path(".")
         val httpResponse = httpClient.get(Url(downloadUrl)) {
             onDownload { bytesSentTotal, contentLength ->
+                bearerAuth("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")
                 logger.debug { "Received $bytesSentTotal bytes from $contentLength" }
             }
         }
