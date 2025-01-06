@@ -17,9 +17,16 @@ data class DatabaseConfig(
     override val filePath: String? = null
 ): DatabaseConfigurable
 
+enum class UpdateChannel {
+    RELEASE,
+    BETA,
+    ALPHA,
+}
+
 @Serializable
 data class Config(
     val database: DatabaseConfig = DatabaseConfig(),
+    val updateChannel: UpdateChannel = UpdateChannel.RELEASE
 )
 
 fun loadConfig(basePath: Path) = loadYamlConfig(basePath.resolve("config.yaml"), Config())

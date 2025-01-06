@@ -2,11 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
-    kotlin("jvm") version "2.1.20-Beta1"
-    kotlin("plugin.serialization") version "2.1.20-Beta1"
-    id("com.gradleup.shadow") version "9.0.0-beta4"
-    id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.run.paper)
+    alias(libs.plugins.resource.factory)
     `maven-publish`
 }
 
@@ -30,30 +30,35 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.2")
-    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.2")
-    implementation("io.github.revxrsal:lamp.brigadier:4.0.0-rc.2")
-    implementation("me.devnatan:inventory-framework-platform-bukkit:3.2.0")
-    implementation("me.devnatan:inventory-framework-platform-paper:3.2.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-    implementation("org.jetbrains.exposed:exposed-core:0.57.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.57.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.57.0")
-    implementation("com.h2database:h2:2.2.224")
-    implementation("org.postgresql:postgresql:42.7.2")
-    implementation("de.dajooo:kommons-core:0.1.0-SNAPSHOT")
-    implementation("de.dajooo:kommons-exposed:0.1.0-SNAPSHOT")
-    implementation("de.dajooo:kommons-config:0.1.0-SNAPSHOT")
-    implementation("de.dajooo:kommons-koin:0.1.0-SNAPSHOT")
-    implementation("de.dajooo:kaper-core:0.1.0-SNAPSHOT")
-    implementation("io.insert-koin:koin-core:4.1.0-Beta1")
-    implementation("io.insert-koin:koin-logger-slf4j:4.1.0-Beta1")
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
-    compileOnly("net.luckperms:api:5.4")
+    compileOnly(libs.paper.api)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.lamp.common)
+    implementation(libs.lamp.bukkit)
+    implementation(libs.lamp.brigadier)
+    compileOnly(libs.inventory.framework.bukkit)
+    compileOnly(libs.inventory.framework.paper)
+    implementation(libs.mccoroutine.api)
+    implementation(libs.mccoroutine.core)
+    implementation(libs.coroutines)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.dao)
+    implementation(libs.h2)
+    implementation(libs.postgresql)
+    implementation(libs.kommons.core)
+    implementation(libs.kommons.exposed)
+    implementation(libs.kommons.config)
+    implementation(libs.kommons.koin)
+    implementation(libs.kaper.core)
+    implementation(libs.koin.core)
+    implementation(libs.koin.slf4j)
+    implementation(libs.kotlin.logging)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.semver)
+    compileOnly(libs.luckperms)
 }
 
 kotlin {
@@ -94,6 +99,7 @@ paperPluginYaml {
     website = "https://dario.lol"
     dependencies {
         server("LuckPerms", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server("InventoryFramework", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
     }
 }
 

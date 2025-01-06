@@ -12,6 +12,7 @@ import de.dajooo.bettersurvival.gui.feature.FeatureOverview
 import de.dajooo.bettersurvival.listeners.DatabaseListener
 import de.dajooo.bettersurvival.listeners.VisualsListener
 import de.dajooo.bettersurvival.player.PlayerRegistry
+import de.dajooo.bettersurvival.updater.Updater
 import de.dajooo.kaper.KotlinPlugin
 import de.dajooo.kaper.extensions.pluginManager
 import de.dajooo.kommons.TypedYamlConfiguration
@@ -20,15 +21,15 @@ import de.dajooo.kommons.koin.loadModule
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.oshai.kotlinlogging.slf4j.logger
 import me.devnatan.inventoryframework.ViewFrame
-import net.luckperms.api.LuckPerms
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
-
+import java.util.*
 
 class BetterSurvivalPlugin : KotlinPlugin() {
 
@@ -38,21 +39,13 @@ class BetterSurvivalPlugin : KotlinPlugin() {
         startKoin {
             modules(module(createdAtStart = true) {
                 single { this@BetterSurvivalPlugin } bind JavaPlugin::class
-                single { loadConfig(dataPath) }
-                single { get<TypedYamlConfiguration<Config>>().get() }
-                single(named("messages")) { loadMessageConfig(dataPath) }
-                single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+                configDefinitions()
                 single { KotlinLogging.logger(slF4JLogger) }
                 single { FeatureRegistry().init() }
                 single { PlayerRegistry().init() }
                 single { ViewFrame.create(this@BetterSurvivalPlugin).with(FeatureOverview()).register() }
                 single { registerCommands() }
-                single {
-                    val provider = Bukkit.getServicesManager().getRegistration(
-                        LuckPerms::class.java
-                    )
-                    provider?.provider
-                }
+                single(named("LuckPerms")) { Optional.ofNullable(kotlin.runCatching { Bukkit.getServicesManager().getRegistration(Class.forName("net.luckperms.api.LuckPerms"))?.provider }.getOrNull()) }
             })
         }
     }
@@ -62,18 +55,25 @@ class BetterSurvivalPlugin : KotlinPlugin() {
         loadModule {
             single { db }
         }
+        if(Updater.updateAvailable()) {
+            logger.warning { "AN UPDATE IS AVAILABLE! TYPE \"/bs update\" and restart your server or update manually by downloading the latest release from https://github.com/dajooo/better-survival/tags" }
+        }
     }
 
     override fun onDisable() {
         TransactionManager.closeAndUnregister(get())
     }
 
+    private fun Module.configDefinitions() {
+        single { loadConfig(dataPath) }
+        single { get<TypedYamlConfiguration<Config>>().get() }
+        single(named("messages")) { loadMessageConfig(dataPath) }
+        single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+    }
+
     override fun reloadConfig() {
         loadModule {
-            single { loadConfig(dataPath) }
-            single { get<TypedYamlConfiguration<Config>>().get() }
-            single(named("messages")) { loadMessageConfig(dataPath) }
-            single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+            configDefinitions()
         }
         super.reloadConfig()
     }

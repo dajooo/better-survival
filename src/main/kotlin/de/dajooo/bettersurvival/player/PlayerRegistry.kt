@@ -1,8 +1,7 @@
 package de.dajooo.bettersurvival.player
 
-import de.dajooo.bettersurvival.feature.Feature
 import org.bukkit.entity.Player
-import java.util.UUID
+import java.util.*
 
 class PlayerRegistry : MutableIterable<BetterSurvivalPlayer> {
     private val players: MutableList<BetterSurvivalPlayer> = mutableListOf()

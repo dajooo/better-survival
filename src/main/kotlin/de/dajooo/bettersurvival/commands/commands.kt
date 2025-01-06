@@ -7,17 +7,18 @@ import de.dajooo.bettersurvival.database.model.Homes
 import de.dajooo.bettersurvival.feature.FeatureRegistry
 import de.dajooo.kommons.koin.getKoin
 import de.dajooo.kommons.koin.withKoin
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.future.asCompletableFuture
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 import revxrsal.commands.Lamp
 import revxrsal.commands.autocomplete.SuggestionProvider
 import revxrsal.commands.bukkit.BukkitLamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.ktx.SuspendFunctionsSupport
-import kotlin.coroutines.CoroutineContext
 
 object CommandScope : CoroutineScope {
     override val coroutineContext = Dispatchers.Default + SupervisorJob()
@@ -40,7 +41,7 @@ fun registerCommands(): Lamp<BukkitCommandActor> = withKoin {
                 }
             }
         }
-        .build();
+        .build()
 
     lamp.register(FeaturesCommand, BetterSurvivalCommand)
 
