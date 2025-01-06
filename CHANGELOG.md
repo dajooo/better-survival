@@ -1,3 +1,10 @@
+# [1.0.0-alpha.10](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2025-01-06)
+
+
+### Bug Fixes
+
+* missing early returns ([5744026](https://github.com/dajooo/better-survival/commit/57440263a5e5aace7cce418e167f73fbfde6a7f8))
+
 # [1.0.0-alpha.9](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2025-01-06)
 
 
