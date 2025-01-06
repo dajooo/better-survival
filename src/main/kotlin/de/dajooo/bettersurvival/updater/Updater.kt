@@ -69,8 +69,9 @@ object Updater : KoinComponent {
         val release = fetchReleaseByChannel(config.updateChannel)
         if (release == null) {
             logger.debug { "No release found" }
+            return
         }
-        val asset = release!!.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
+        val asset = release.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
         val downloadUrl = asset.browserDownloadUrl
         val oldPlugin = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
         val file = plugin.dataPath.resolve(asset.name)
