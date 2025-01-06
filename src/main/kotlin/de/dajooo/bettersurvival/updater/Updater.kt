@@ -40,20 +40,24 @@ object Updater : KoinComponent {
         }.getOrNull()
     }
 
-    private suspend fun fetchLatestPrerelease(): GithubRelease? {
+    private suspend fun fetchLatestPrerelease(channel: UpdateChannel): GithubRelease? {
         return httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases") {
             accept(ContentType("application", "vnd.github.v3+json"))
             header("X-GitHub-Api-Version", "2022-11-28")
         }.body<List<GithubRelease>>().filter {
-            if (config.updateChannel == UpdateChannel.BETA) Semver.parse(it.tagName)?.preRelease?.first() == "beta"
+            if (channel == UpdateChannel.BETA) Semver.parse(it.tagName)?.preRelease?.first() == "beta"
             else Semver.parse(it.tagName)?.preRelease?.first() == "alpha"
         }.firstOrNull { it.prerelease }
     }
 
-    suspend fun updateAvailable(): Boolean {
-        val release = if (config.updateChannel == UpdateChannel.RELEASE) {
+    suspend fun fetchReleaseByChannel(channel: UpdateChannel): GithubRelease? {
+        return if (config.updateChannel == UpdateChannel.RELEASE) {
             fetchLatestRelease()
-        } else fetchLatestPrerelease()
+        } else fetchLatestPrerelease(channel)
+    }
+
+    suspend fun updateAvailable(): Boolean {
+        val release = fetchReleaseByChannel(config.updateChannel)
         if (release == null) {
             logger.debug { "No release found" }
             return false
@@ -62,8 +66,11 @@ object Updater : KoinComponent {
     }
 
     suspend fun update() {
-        val release = fetchLatestPrerelease()
-        val asset = release.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
+        val release = fetchReleaseByChannel(config.updateChannel)
+        if (release == null) {
+            logger.debug { "No release found" }
+        }
+        val asset = release!!.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
         val downloadUrl = asset.browserDownloadUrl
         val oldPlugin = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
         val file = plugin.dataPath.resolve(asset.name)
