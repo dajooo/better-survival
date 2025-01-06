@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-01-06)
+
+
+### Features
+
+* Auto Updater ([877eed8](https://github.com/dajooo/better-survival/commit/877eed886aba8fb9acbae702df880970c6327fea))
+
 # [1.0.0-alpha.11](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.10...v1.0.0-alpha.11) (2025-01-06)
 
 
