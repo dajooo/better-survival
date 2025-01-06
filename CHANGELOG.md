@@ -1,3 +1,10 @@
+# [1.0.0-alpha.7](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2025-01-06)
+
+
+### Features
+
+* update channels ([662af4b](https://github.com/dajooo/better-survival/commit/662af4bb5e9ae5a0a55ea8f2923275bcdc7e7158))
+
 # [1.0.0-alpha.6](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2025-01-06)
 
 
