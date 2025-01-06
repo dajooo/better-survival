@@ -1,6 +1,7 @@
 package de.dajooo.bettersurvival.updater
 
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
+import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -14,12 +15,12 @@ import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.semver4j.Semver
-import kotlin.io.path.name
-import kotlin.io.path.toPath
-import kotlin.io.path.writeBytes
+import java.nio.file.Path
+import kotlin.io.path.*
 
 object Updater : KoinComponent {
     private val plugin by inject<BetterSurvivalPlugin>()
+    private val logger by inject<KLogger>()
     private val httpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             json(Json {
@@ -51,16 +52,16 @@ object Updater : KoinComponent {
 
     suspend fun update() {
         val release = fetchLatestPrerelease()
-        val asset = release.assets.first { it.name.endsWith(".jar") }
+        val asset = release.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
         val downloadUrl = asset.browserDownloadUrl
         val file = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
         val httpResponse = httpClient.get(Url(downloadUrl)) {
             onDownload { bytesSentTotal, contentLength ->
-                println("Received $bytesSentTotal bytes from $contentLength")
+                logger.debug { "Received $bytesSentTotal bytes from $contentLength" }
             }
         }
         val responseBody: ByteArray = httpResponse.body()
         file.writeBytes(responseBody)
-        println("A file saved to ${file.name}")
+        logger.debug { "A file saved to ${file.relativeTo(Path("."))}" }
     }
 }
