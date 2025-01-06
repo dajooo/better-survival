@@ -38,7 +38,6 @@ object Updater : KoinComponent {
     private suspend fun fetchLatestPrerelease(): GithubRelease {
         return httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases") {
             accept(ContentType("application", "vnd.github.v3+json"))
-            bearerAuth("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")
             header("X-GitHub-Api-Version", "2022-11-28")
         }.body<List<GithubRelease>>().first { it.prerelease }
     }
@@ -57,7 +56,6 @@ object Updater : KoinComponent {
         val rootDir = Path(".")
         val httpResponse = httpClient.get(Url(downloadUrl)) {
             onDownload { bytesSentTotal, contentLength ->
-                bearerAuth("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")
                 logger.debug { "Received $bytesSentTotal bytes from $contentLength" }
             }
         }
