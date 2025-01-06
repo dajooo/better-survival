@@ -1,3 +1,10 @@
+# [1.0.0-alpha.3](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2025-01-06)
+
+
+### Bug Fixes
+
+* make luckperms actually optional ([e6275b4](https://github.com/dajooo/better-survival/commit/e6275b45939b5712f43ecd46ffd6bcdd8bd4dbb7))
+
 # [1.0.0-alpha.2](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2025-01-06)
 
 
