@@ -1,3 +1,10 @@
+# [1.0.0-alpha.9](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2025-01-06)
+
+
+### Bug Fixes
+
+* updater ([d227cf3](https://github.com/dajooo/better-survival/commit/d227cf397639b07b49c0235d3a06dcac32bc1a49))
+
 # [1.0.0-alpha.8](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2025-01-06)
 
 
