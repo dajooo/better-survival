@@ -74,7 +74,7 @@ object Updater : KoinComponent {
         val asset = release.assets.first { it.name.endsWith(".jar") && it.name.endsWith("-all.jar") }
         val downloadUrl = asset.browserDownloadUrl
         val oldPlugin = plugin.javaClass.protectionDomain.codeSource.location.toURI().toPath()
-        val file = plugin.dataPath.resolve(asset.name)
+        val file = plugin.dataPath.parent.resolve(asset.name)
         val rootDir = Path(".")
         val httpResponse = httpClient.get(Url(downloadUrl)) {
             onDownload { bytesSentTotal, contentLength ->
