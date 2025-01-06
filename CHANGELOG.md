@@ -1,3 +1,10 @@
+# [1.0.0-alpha.6](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2025-01-06)
+
+
+### Bug Fixes
+
+* updater base path ([fa10e37](https://github.com/dajooo/better-survival/commit/fa10e37920ddfe5a23189707d9850e5099653572))
+
 # [1.0.0-alpha.5](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2025-01-06)
 
 
