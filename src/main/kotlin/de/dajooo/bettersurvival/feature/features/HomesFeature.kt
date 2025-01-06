@@ -5,6 +5,7 @@ import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.commands.suggestions.SuggestHomes
 import de.dajooo.bettersurvival.config.MessageConfig
+import de.dajooo.bettersurvival.database.model.PlayerEntity
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.player.survivalPlayer
@@ -12,6 +13,7 @@ import de.dajooo.kaper.extensions.minimessage
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import revxrsal.commands.annotation.Command
@@ -31,7 +33,24 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
     override val description = !"<gray>Adds a homes feature to the plugin.</gray>"
     override val typedConfig = config(Config())
 
-    override val commands = arrayOf<Any>(HomeCommand, SetHomeCommand, DeleteHomeCommand)
+    override val commands = arrayOf<Any>(HomeCommand, SetHomeCommand, DeleteHomeCommand, BackCommand)
+
+    object BackCommand : KoinComponent {
+        private val messages by inject<MessageConfig>()
+
+        @Command("back", "b")
+        suspend fun back(actor: BukkitCommandActor) {
+            val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
+            val databasePlayer = newSuspendedTransaction { player.survivalPlayer.databasePlayer }
+            val lastLocation = databasePlayer.deathPosition ?: databasePlayer.lastPosition
+            player.sendMessage(!messages.backTeleport)
+            newSuspendedTransaction {
+                databasePlayer.deathPosition = null
+                databasePlayer.lastPosition = player.location
+            }
+            player.teleportAsync(lastLocation)
+        }
+    }
 
     @Command("homes", "home list", "home ls")
     object HomesCommand : KoinComponent {
@@ -56,7 +75,6 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
             }
             player.sendMessage(!messages.homeListFooter)
         }
-
     }
 
     @Command("home", "h")

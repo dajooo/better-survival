@@ -18,6 +18,7 @@ Set multiple teleport points throughout your world:
 - Teleport to homes using `/home [name]`
 - List all homes with `/homes`
 - Delete homes using `/deletehome [name]`
+- Teleport to your last location using `/back`
 
 ### 🪓 Timber
 Cut down entire trees instantly while sneaking:
@@ -31,6 +32,23 @@ Make saplings grow faster by sneaking near them:
 - Affects all nearby saplings in a 2-block radius
 - Configurable growth chance
 - Works with all vanilla tree types
+
+### 🛏️ Better Beds
+Skip the night with only a percentage of players sleeping:
+- Configurable minimum percentage of players needed
+- Customizable morning time
+- Shows sleeping progress in chat
+- Works per-world
+
+### 🛠️ Custom Recipes
+Adds various quality-of-life crafting recipes:
+- **Slabs to Blocks**: Convert slabs back to full blocks (supports all vanilla slab types)
+- **Horse Armor**: Craft horse armor using respective materials (Gold, Iron, Diamond) + Wool
+- **Logs to Chests**: Craft 4 chests from logs (any type)
+- **Logs to Sticks**: Craft 8 sticks directly from logs
+- **Rotten Flesh to Leather**: Smelt rotten flesh into leather
+- **Magma Block to Cream**: Convert magma blocks into 4 magma cream
+- **Name Tag**: Craft name tags using string, iron, and leather
 
 ## Installation
 
@@ -73,6 +91,27 @@ crop-right-click:
     - POTATO
     - CARROT
     - NETHER_WART
+```
+
+### Better Beds Configuration
+```yaml
+better-beds:
+  enabled: true
+  minPercentage: 50  # Minimum percentage of players needed to skip night
+  morningTime: 1000  # Time to set when skipping to morning
+```
+
+### Custom Recipes Configuration
+```yaml
+custom-recipes:
+  enabled: true
+  slabs: true           # Enable slab to block recipes
+  horseArmor: true      # Enable horse armor recipes
+  logsToChest: true     # Enable logs to chest recipe
+  logsToSticks: true    # Enable logs to sticks recipe
+  rottenFleshToLeather: true  # Enable rotten flesh to leather recipe
+  magmaBlockToMagmaCream: true  # Enable magma block to cream recipe
+  nameTag: true         # Enable name tag recipe
 ```
 
 ## Building from Source

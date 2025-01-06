@@ -1,6 +1,7 @@
 package de.dajooo.bettersurvival.database.model
 
 import de.dajooo.bettersurvival.database.delegates.location
+import de.dajooo.bettersurvival.database.delegates.nullableLocation
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -15,6 +16,12 @@ object Players: UUIDTable("players", "players") {
     val lastPositionWorld = varchar("lastPositionWorld", 16)
     val lastPositionYaw = float("lastPositionYaw")
     val lastPositionPitch = float("lastPositionPitch")
+    val deathPositionX = double("deathPositionX").nullable()
+    val deathPositionY = double("deathPositionY").nullable()
+    val deathPositionZ = double("deathPositionZ").nullable()
+    val deathPositionWorld = varchar("deathPositionWorld", 16).nullable()
+    val deathPositionYaw = float("deathPositionYaw").nullable()
+    val deathPositionPitch = float("deathPositionPitch").nullable()
 }
 
 class PlayerEntity(id: EntityID<UUID>) : UUIDEntity(id) {
@@ -28,5 +35,13 @@ class PlayerEntity(id: EntityID<UUID>) : UUIDEntity(id) {
         Players.lastPositionZ,
         Players.lastPositionYaw,
         Players.lastPositionPitch
+    )
+    var deathPosition by nullableLocation(
+        Players.deathPositionWorld,
+        Players.deathPositionX,
+        Players.deathPositionY,
+        Players.deathPositionZ,
+        Players.deathPositionYaw,
+        Players.deathPositionPitch
     )
 }
