@@ -91,6 +91,9 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         suspend fun home(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
             val home = player.survivalPlayer.home(name) ?: return player.sendMessage(!messages.homeNotFound)
+            newSuspendedTransaction {
+                player.survivalPlayer.databasePlayer.lastPosition = player.location
+            }
             plugin.launch(plugin.minecraftDispatcher) {
                 player.sendMessage(minimessage(messages.homeTeleport, "home" to home.name))
                 player.teleportAsync(home.location)
