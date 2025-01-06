@@ -1,3 +1,10 @@
+# [1.0.0-alpha.2](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2025-01-06)
+
+
+### Bug Fixes
+
+* don't shadow inventory framework ([cefbd69](https://github.com/dajooo/better-survival/commit/cefbd693ca9832125f877fdea039a70880c61ae5))
+
 # 1.0.0-alpha.1 (2025-01-06)
 
 
