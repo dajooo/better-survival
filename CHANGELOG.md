@@ -1,3 +1,10 @@
+# [1.0.0-beta.8](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2025-01-06)
+
+
+### Bug Fixes
+
+* register homes command ([e0e714e](https://github.com/dajooo/better-survival/commit/e0e714edac2f4a0e5f79d1e11e360d4679a08fff))
+
 # [1.0.0-beta.7](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-01-06)
 
 
