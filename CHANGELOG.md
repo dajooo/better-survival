@@ -1,3 +1,10 @@
+# [1.0.0-alpha.5](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2025-01-06)
+
+
+### Bug Fixes
+
+* download request with pat ([ba039d4](https://github.com/dajooo/better-survival/commit/ba039d466498b38e32b577384016fa59615fbb5c))
+
 # [1.0.0-alpha.4](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2025-01-06)
 
 
