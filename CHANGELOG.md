@@ -1,3 +1,10 @@
+# [1.0.0-alpha.11](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.10...v1.0.0-alpha.11) (2025-01-06)
+
+
+### Bug Fixes
+
+* reload message ([dc14b51](https://github.com/dajooo/better-survival/commit/dc14b513f22876d870b32032c82a2365d2a91e1a))
+
 # [1.0.0-alpha.10](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2025-01-06)
 
 
