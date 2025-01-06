@@ -1,3 +1,10 @@
+# [1.0.0-alpha.8](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2025-01-06)
+
+
+### Bug Fixes
+
+* fetch exceptions if no release was found ([3848207](https://github.com/dajooo/better-survival/commit/3848207866973fa2437cb95e379a8c00547dccf7))
+
 # [1.0.0-alpha.7](https://github.com/dajooo/better-survival/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2025-01-06)
 
 
