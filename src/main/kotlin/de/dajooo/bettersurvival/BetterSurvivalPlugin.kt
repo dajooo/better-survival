@@ -25,9 +25,11 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import java.util.*
 
 class BetterSurvivalPlugin : KotlinPlugin() {
 
@@ -37,31 +39,14 @@ class BetterSurvivalPlugin : KotlinPlugin() {
         startKoin {
             modules(module(createdAtStart = true) {
                 single { this@BetterSurvivalPlugin } bind JavaPlugin::class
-                single { loadConfig(dataPath) }
-                single { get<TypedYamlConfiguration<Config>>().get() }
-                single(named("messages")) { loadMessageConfig(dataPath) }
-                single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+                configDefinitions()
                 single { KotlinLogging.logger(slF4JLogger) }
                 single { FeatureRegistry().init() }
                 single { PlayerRegistry().init() }
                 single { ViewFrame.create(this@BetterSurvivalPlugin).with(FeatureOverview()).register() }
                 single { registerCommands() }
-                if(isClassAvailable("net.luckperms.api.LuckPerms")) {
-                    single {
-                        val provider = Bukkit.getServicesManager().getRegistration(Class.forName("net.luckperms.api.LuckPerms"))
-                        provider?.provider
-                    }
-                }
+                single(named("LuckPerms")) { Optional.ofNullable(kotlin.runCatching { Bukkit.getServicesManager().getRegistration(Class.forName("net.luckperms.api.LuckPerms"))?.provider }.getOrNull()) }
             })
-        }
-    }
-
-    private fun isClassAvailable(className: String): Boolean {
-        try {
-            Class.forName(className)
-            return true
-        } catch (e: ClassNotFoundException) {
-            return false
         }
     }
 
@@ -79,12 +64,16 @@ class BetterSurvivalPlugin : KotlinPlugin() {
         TransactionManager.closeAndUnregister(get())
     }
 
+    private fun Module.configDefinitions() {
+        single { loadConfig(dataPath) }
+        single { get<TypedYamlConfiguration<Config>>().get() }
+        single(named("messages")) { loadMessageConfig(dataPath) }
+        single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+    }
+
     override fun reloadConfig() {
         loadModule {
-            single { loadConfig(dataPath) }
-            single { get<TypedYamlConfiguration<Config>>().get() }
-            single(named("messages")) { loadMessageConfig(dataPath) }
-            single { get<TypedYamlConfiguration<MessageConfig>>(named("messages")).get() }
+            configDefinitions()
         }
         super.reloadConfig()
     }
