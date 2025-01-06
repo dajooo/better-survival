@@ -33,7 +33,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
     override val description = !"<gray>Adds a homes feature to the plugin.</gray>"
     override val typedConfig = config(Config())
 
-    override val commands = arrayOf<Any>(HomeCommand, SetHomeCommand, DeleteHomeCommand, BackCommand)
+    override val commands = arrayOf<Any>(HomesCommand, HomeCommand, SetHomeCommand, DeleteHomeCommand, BackCommand)
 
     object BackCommand : KoinComponent {
         private val messages by inject<MessageConfig>()
