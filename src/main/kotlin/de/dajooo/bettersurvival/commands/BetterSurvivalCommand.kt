@@ -19,7 +19,7 @@ object BetterSurvivalCommand: KoinComponent {
     @CommandPermission("bettersurvival.command.reload")
     fun reload(actor: BukkitCommandActor) {
         plugin.reloadConfig()
-        actor.sender().sendMessage("<red>Config has been reloaded!")
+        actor.sender().sendMessage(!"<red>Config has been reloaded!")
     }
 
     @Subcommand("update")
