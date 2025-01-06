@@ -1,3 +1,10 @@
+# [1.0.0-beta.4](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2025-01-06)
+
+
+### Features
+
+* back command ([567c671](https://github.com/dajooo/better-survival/commit/567c6713c67b7dac461c90b63697343bb65454b0))
+
 # [1.0.0-beta.3](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2025-01-06)
 
 
