@@ -1,3 +1,10 @@
+# [1.0.0-beta.13](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2025-01-07)
+
+
+### Features
+
+* add basic vein miner feature ([bed96f7](https://github.com/dajooo/better-survival/commit/bed96f7d79a5bdc310a8e8956ef216eb94dde4dc))
+
 # [1.0.0-beta.12](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2025-01-07)
 
 
