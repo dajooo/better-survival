@@ -7,6 +7,7 @@ import com.github.shynixn.mccoroutine.bukkit.ticks
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.util.expiringBuffer
 import de.dajooo.kaper.extensions.not
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.koin.core.component.inject
@@ -27,7 +29,8 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
     data class Config(
         override var enabled: Boolean = true,
         var limit: Int = 512,
-    ): FeatureConfig
+        var maxLeaves: Int = 512,
+    ) : FeatureConfig
 
     private val plugin by inject<BetterSurvivalPlugin>()
 
@@ -46,24 +49,39 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
         Material.MANGROVE_LOG to Material.MANGROVE_LEAVES,
     )
 
-
-    private val playerActionbarBuffer = mutableListOf<Player>()
+    private val playerActionbarBuffer = expiringBuffer<Player>()
 
     @EventHandler
     fun handleMove(event: PlayerMoveEvent) {
         val targetBlock = event.player.getTargetBlock(setOf(Material.AIR), 5)
-        if(MaterialSetTag.LOGS.isTagged(targetBlock.type) && event.player.isSneaking) {
+        if (MaterialSetTag.LOGS.isTagged(targetBlock.type) && event.player.isSneaking) {
             event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} logs</red>")
             playerActionbarBuffer.add(event.player)
             return
         }
-        if(playerActionbarBuffer.contains(event.player) && !MaterialSetTag.LOGS.isTagged(targetBlock.type) && !event.player.isSneaking) {
+        if (playerActionbarBuffer.contains(event.player) && (!MaterialSetTag.LOGS.isTagged(targetBlock.type) || !event.player.isSneaking)) {
             event.player.sendActionBar(Component.empty())
+            playerActionbarBuffer.remove(event.player)
         }
     }
 
-   @EventHandler
-   fun handleBockBreak(event: BlockBreakEvent) {
+    @EventHandler
+    fun handleToggleSneak(event: PlayerToggleSneakEvent) {
+        val player = event.player
+        val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
+
+        if (event.isSneaking && MaterialSetTag.LOGS.isTagged(targetBlock.type)) {
+            player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} logs</red>")
+            playerActionbarBuffer.add(player)
+        }
+        if (!event.isSneaking && playerActionbarBuffer.contains(player)) {
+            player.sendActionBar(Component.empty())
+            playerActionbarBuffer.remove(player)
+        }
+    }
+
+    @EventHandler
+    fun handleBockBreak(event: BlockBreakEvent) {
         if (!MaterialSetTag.LOGS.isTagged(event.block.type)) return
         if (!event.player.isSneaking) return
         val logs = event.block.connectedBlocks()
@@ -83,20 +101,22 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
             leaves.shuffled().forEach { block ->
                 if (!MaterialSetTag.LEAVES.isTagged(block.type)) return@forEach
                 val leave = block.blockData as? Leaves ?: return@forEach
-                if(leave.distance < leave.maximumDistance) return@forEach
-                if(leave.isPersistent) return@forEach
+                if (leave.distance < leave.maximumDistance) return@forEach
+                if (leave.isPersistent) return@forEach
                 if (brokenBlocks % 10 == 0) delay(1.ticks)
                 block.breakNaturallyWithToolBreaking(event.player, item, false)
                 brokenBlocks++
             }
         }
     }
+
     private fun Block.connectedBlocks(): List<Block> {
         val blocks = HashSet<Block>().apply { add(this@connectedBlocks) }
         val queue = ArrayDeque<Block>().apply { add(this@connectedBlocks) }
 
-        while (queue.isNotEmpty() && blocks.size <= config.limit) {
+        while (queue.isNotEmpty()) {
             queue.removeFirst().neighbors.forEach { neighborBlock ->
+                if (blocks.size >= config.limit) return blocks.toList()
                 if (neighborBlock.type == type && blocks.add(neighborBlock)) {
                     queue.add(neighborBlock)
                 }
@@ -104,14 +124,14 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
         }
         return blocks.toList()
     }
-
     private fun List<Block>.connectedLeaves(type: Material): List<Block> {
         val blocks = HashSet<Block>()
         val queue = ArrayDeque(this)
         val targetType = logToLeaveMap[type]
 
-        while (queue.isNotEmpty() && (this.size + blocks.size <= config.limit)) {
+        while (queue.isNotEmpty()) {
             queue.removeFirst().neighbors.forEach { neighborBlock ->
+                if (this.size + blocks.size >= config.maxLeaves) return blocks.toList()
                 if (targetType == neighborBlock.type && blocks.add(neighborBlock)) {
                     queue.add(neighborBlock)
                 }
@@ -124,7 +144,8 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
         if (!MaterialSetTag.LOGS.isTagged(this.type) ||
             !MaterialTags.AXES.isTagged(tool.type) ||
             tool.itemMeta?.isUnbreakable == true ||
-            tool.itemMeta !is Damageable) {
+            tool.itemMeta !is Damageable
+        ) {
             this.breakNaturally(tool, triggerEffect)
             return
         }
