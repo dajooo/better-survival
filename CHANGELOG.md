@@ -1,3 +1,10 @@
+# [1.0.0-beta.20](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.19...v1.0.0-beta.20) (2025-01-07)
+
+
+### Bug Fixes
+
+* **vein-miner:** prevent recursive block breaking ([f3aaae3](https://github.com/dajooo/better-survival/commit/f3aaae383a20bacdb0522d863cf1a0963552c882))
+
 # [1.0.0-beta.19](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.18...v1.0.0-beta.19) (2025-01-07)
 
 
