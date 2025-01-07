@@ -1,3 +1,10 @@
+# [1.0.0-beta.23](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.22...v1.0.0-beta.23) (2025-01-07)
+
+
+### Bug Fixes
+
+* **timber:** use async tick ([5914af0](https://github.com/dajooo/better-survival/commit/5914af09b141d1745309b7448ee7310187d00f69))
+
 # [1.0.0-beta.22](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.21...v1.0.0-beta.22) (2025-01-07)
 
 
