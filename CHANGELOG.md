@@ -1,3 +1,10 @@
+# [1.0.0-beta.21](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.20...v1.0.0-beta.21) (2025-01-07)
+
+
+### Bug Fixes
+
+* **visuals:** display name color ([8a65cbc](https://github.com/dajooo/better-survival/commit/8a65cbc3cebc6478041ad6a4dbb41e18ae874cb4))
+
 # [1.0.0-beta.20](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.19...v1.0.0-beta.20) (2025-01-07)
 
 
