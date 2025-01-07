@@ -1,3 +1,10 @@
+# [1.0.0-beta.24](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2025-01-07)
+
+
+### Bug Fixes
+
+* **vein-miner:** check preferred tool before sending actionbar ([141be0f](https://github.com/dajooo/better-survival/commit/141be0fd6d4e9e52fb4953f804418b9fc96cc819))
+
 # [1.0.0-beta.23](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.22...v1.0.0-beta.23) (2025-01-07)
 
 
