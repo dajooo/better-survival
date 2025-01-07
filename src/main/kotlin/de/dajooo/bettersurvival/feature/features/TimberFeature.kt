@@ -53,7 +53,7 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
 
     private val playerActionbarBuffer = expiringBuffer<Player>()
 
-    override fun onTick(tick: Int) {
+    override fun onTickAsync(tick: Int) {
         onlinePlayers.forEach { player ->
             val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
             if (MaterialSetTag.LOGS.isTagged(targetBlock.type) && player.isSneaking) {
