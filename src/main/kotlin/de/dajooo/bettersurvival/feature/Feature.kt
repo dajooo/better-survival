@@ -9,6 +9,8 @@ interface Feature<C: FeatureConfig> {
     val description: Component
     fun enable()
     fun disable()
+    fun tick(tick: Int) {}
+    fun tickAsync(tick: Int) {}
     val enabled: Boolean
     val typedConfig : TypedConfiguration<C>
     val config: C

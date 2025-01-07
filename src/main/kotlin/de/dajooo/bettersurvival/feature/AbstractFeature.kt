@@ -1,10 +1,12 @@
 package de.dajooo.bettersurvival.feature
 
 import de.dajooo.kaper.extensions.pluginManager
+import de.dajooo.kaper.extensions.timerTask
 import de.dajooo.kommons.loadYamlConfig
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.scheduler.BukkitTask
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import revxrsal.commands.Lamp
@@ -42,9 +44,18 @@ abstract class AbstractFeature<C : FeatureConfig>: Feature<C>, KoinComponent, Li
         onDisable()
     }
 
+    override fun tick(tick: Int) = onTick(tick)
+    override fun tickAsync(tick: Int) = onTickAsync(tick)
+
     @Suppress("MemberVisibilityCanBePrivate")
     open fun onEnable() {}
 
     @Suppress("MemberVisibilityCanBePrivate")
     open fun onDisable() {}
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    open fun onTick(tick: Int) {}
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    open fun onTickAsync(tick: Int) {}
 }

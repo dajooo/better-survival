@@ -33,6 +33,8 @@ data class MessageConfig(
     val playersSleeping: String = "<prefix><gray><sleeping>/<max_sleeping> [<percentage>%] players are sleeping in <world>.",
     val morning: String = "<prefix>Good morning!",
     val backTeleport: String = "<prefix>Teleporting to your last location...",
+    val displayNameFormat: String = "<player_prefix><player_color><player_name></player_color><player_suffix>",
+    val playerListNameFormat: String = "<player_prefix><player_color><player_name></player_color><player_suffix>"
 )
 
 fun loadMessageConfig(basePath: Path) = loadYamlConfig(basePath.resolve("messages.yaml"), MessageConfig())

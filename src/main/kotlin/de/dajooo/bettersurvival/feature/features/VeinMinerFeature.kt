@@ -8,7 +8,9 @@ import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.util.expiringBuffer
 import de.dajooo.kaper.extensions.not
+import de.dajooo.kaper.extensions.onlinePlayers
 import de.dajooo.kaper.extensions.tagKeyFor
+import de.dajooo.kaper.extensions.timerTask
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
@@ -18,6 +20,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.scheduler.BukkitTask
 import org.koin.core.component.inject
 
 
@@ -38,17 +41,32 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
     private val playerActionbarBuffer = expiringBuffer<Player>()
 
-    private val mineableBlocksSetTag = MaterialSetTag(tagKeyFor("vein_miner_blocks"), config.minableBlocks)
+    private val minableBlocksSetTag = MaterialSetTag(tagKeyFor("vein_miner_blocks"), config.minableBlocks)
+
+    override fun onTickAsync(tick: Int) {
+        onlinePlayers.forEach { player ->
+            val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
+            if (minableBlocksSetTag.isTagged(targetBlock.type) && player.isSneaking) {
+                player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
+                playerActionbarBuffer.add(player)
+                return@forEach
+            }
+            if (playerActionbarBuffer.contains(player) && (!MaterialSetTag.LOGS.isTagged(targetBlock.type) || !player.isSneaking)) {
+                player.sendActionBar(Component.empty())
+                playerActionbarBuffer.remove(player)
+            }
+        }
+    }
 
     @EventHandler
     fun handleMove(event: PlayerMoveEvent) {
-        val targetBlock = event.player.getTargetBlock(setOf(Material.AIR), 5)
-        if (mineableBlocksSetTag.isTagged(targetBlock.type) && event.player.isSneaking && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
+        val targetBlock = event.player.getTargetBlockExact(5) ?: return
+        if (minableBlocksSetTag.isTagged(targetBlock.type) && event.player.isSneaking && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
             event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
             playerActionbarBuffer.add(event.player)
             return
         }
-        if (playerActionbarBuffer.contains(event.player) && (!mineableBlocksSetTag.isTagged(targetBlock.type) || !event.player.isSneaking)) {
+        if (playerActionbarBuffer.contains(event.player) && (!minableBlocksSetTag.isTagged(targetBlock.type) || !event.player.isSneaking)) {
             event.player.sendActionBar(Component.empty())
             playerActionbarBuffer.remove(event.player)
         }
@@ -56,16 +74,15 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
     @EventHandler
     fun handleToggleSneak(event: PlayerToggleSneakEvent) {
-        val player = event.player
-        val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
+        val targetBlock = event.player.getTargetBlockExact(5) ?: return
 
-        if (event.isSneaking && mineableBlocksSetTag.isTagged(targetBlock.type) && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
-            player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
-            playerActionbarBuffer.add(player)
+        if (event.isSneaking && minableBlocksSetTag.isTagged(targetBlock.type) && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
+            event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
+            playerActionbarBuffer.add(event.player)
         }
-        if (!event.isSneaking && playerActionbarBuffer.contains(player)) {
-            player.sendActionBar(Component.empty())
-            playerActionbarBuffer.remove(player)
+        if (!event.isSneaking && playerActionbarBuffer.contains(event.player)) {
+            event.player.sendActionBar(Component.empty())
+            playerActionbarBuffer.remove(event.player)
         }
     }
     private val processingBlocks = HashSet<Block>()
@@ -74,7 +91,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     fun handleBlockBreak(event: BlockBreakEvent) {
         val block = event.block
         if (processingBlocks.contains(block)) return
-        if (!mineableBlocksSetTag.isTagged(block.type)) return
+        if (!minableBlocksSetTag.isTagged(block.type)) return
         if (!event.player.isSneaking) return
         if (!block.isPreferredTool(event.player.inventory.itemInMainHand)) return
 
@@ -85,7 +102,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
         plugin.launch {
             blocks.forEach { connectedBlock ->
-                if (!mineableBlocksSetTag.isTagged(connectedBlock.type)) return@forEach
+                if (!minableBlocksSetTag.isTagged(connectedBlock.type)) return@forEach
                 processingBlocks.add(connectedBlock)
                 event.player.breakBlock(connectedBlock)
                 processingBlocks.remove(connectedBlock)

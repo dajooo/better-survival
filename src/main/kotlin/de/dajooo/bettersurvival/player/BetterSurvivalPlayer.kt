@@ -1,9 +1,11 @@
 package de.dajooo.bettersurvival.player
 
+import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.database.model.Home
 import de.dajooo.bettersurvival.database.model.Homes
 import de.dajooo.bettersurvival.database.model.PlayerEntity
 import de.dajooo.kaper.extensions.mini
+import de.dajooo.kaper.extensions.to
 import de.dajooo.kaper.scoreboard.nametag.nameTag
 import de.dajooo.kommons.koin.withKoin
 import net.kyori.adventure.text.Component
@@ -27,6 +29,7 @@ class BetterSurvivalPlayer(
     constructor(player: Player) : this(player.uniqueId, player)
 
     private val luckPerms by inject<Optional<LuckPerms>>(named("LuckPerms"))
+    private val messages by inject<MessageConfig>()
 
     val name get() = player.name()
     val databasePlayer get() = PlayerEntity.findById(uuid) ?: error("Player is not registered in database")
@@ -36,8 +39,8 @@ class BetterSurvivalPlayer(
     val color = luckPermsUser?.cachedData?.metaData?.getMetaValue("color")?.let { NamedTextColor.NAMES.value(it) } ?: NamedTextColor.GRAY
 
     fun applyNametag() {
-        player.displayName(prefix.append(name.color(color)).append(suffix))
-        player.playerListName(prefix.append(name.color(color)).append(suffix))
+        player.displayName(messages.displayNameFormat.mini("player_prefix" to prefix, "player_suffix" to suffix, "player_name" to name, "player_color" to color))
+        player.playerListName(messages.playerListNameFormat.mini("player_prefix" to prefix, "player_suffix" to suffix, "player_name" to name, "player_color" to color))
         player.nameTag {
             prefix = this@BetterSurvivalPlayer.prefix
             suffix = this@BetterSurvivalPlayer.suffix
