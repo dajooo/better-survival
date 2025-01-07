@@ -5,6 +5,7 @@ import de.dajooo.bettersurvival.config.Config
 import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.feature.FeatureRegistry
 import de.dajooo.bettersurvival.gui.feature.FeatureOverview
+import de.dajooo.kaper.extensions.mini
 import de.dajooo.kaper.extensions.minimessage
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
@@ -30,10 +31,10 @@ object FeaturesCommand : KoinComponent {
     fun list(actor: BukkitCommandActor) {
         actor.sender().sendMessage(!messages.listFeaturesHeader)
         featureRegistry.forEach {
-            val statusName = if (it.enabled) it.displayName.color(NamedTextColor.GREEN) else it.displayName.color(NamedTextColor.RED)
+            val statusName =
+                if (it.enabled) it.displayName.color(NamedTextColor.GREEN) else it.displayName.color(NamedTextColor.RED)
             actor.sender().sendMessage(
-                minimessage(
-                    messages.listFeaturesEntry,
+                messages.listFeaturesEntry.mini(
                     "status_name" to statusName,
                     "description" to it.description
                 )
@@ -45,28 +46,34 @@ object FeaturesCommand : KoinComponent {
     @Subcommand("enable <feature>")
     @CommandPermission("bettersurvival.feature.enable")
     fun enable(actor: BukkitCommandActor, @SuggestFeatures feature: String) {
-        if (!actor.sender().hasPermission("bettersurvival.feature.enable.$feature")) return actor.sender().sendMessage(messages.noPermission)
-        val feat = featureRegistry.enable(feature) ?: return actor.sender().sendMessage(minimessage(messages.featureNotFound, "feature" to feature))
-        actor.sender().sendMessage(minimessage(messages.featureEnabled, "feature" to feat.displayName))
+        if (!actor.sender().hasPermission("bettersurvival.feature.enable.$feature")) return actor.sender()
+            .sendMessage(!messages.noPermission)
+        val feat = featureRegistry.enable(feature) ?: return actor.sender()
+            .sendMessage(messages.featureNotFound.mini("feature" to feature))
+        actor.sender().sendMessage(messages.featureEnabled.mini("feature" to feat.displayName))
     }
 
     @Subcommand("disable <feature>")
     @CommandPermission("bettersurvival.feature.disable")
     fun disable(actor: BukkitCommandActor, @SuggestFeatures feature: String) {
-        if (!actor.sender().hasPermission("bettersurvival.feature.disable.$feature")) return actor.sender().sendMessage(messages.noPermission)
-        val feat = featureRegistry.enable(feature) ?: return actor.sender().sendMessage(minimessage(messages.featureNotFound, "feature" to feature))
-        actor.sender().sendMessage(minimessage(messages.featureDisabled, "feature" to feat.displayName))
+        if (!actor.sender().hasPermission("bettersurvival.feature.disable.$feature")) return actor.sender()
+            .sendMessage(!messages.noPermission)
+        val feat = featureRegistry.enable(feature) ?: return actor.sender()
+            .sendMessage(messages.featureNotFound.mini("feature" to feature))
+        actor.sender().sendMessage(messages.featureDisabled.mini("feature" to feat.displayName))
     }
 
     @Subcommand("toggle <feature>")
     @CommandPermission("bettersurvival.feature.toggle")
     fun toggle(actor: BukkitCommandActor, @SuggestFeatures feature: String) {
-        if (!actor.sender().hasPermission("bettersurvival.feature.toggle.$feature")) return actor.sender().sendMessage(messages.noPermission)
-        val feat = featureRegistry.toggle(feature) ?: return actor.sender().sendMessage(minimessage(messages.featureNotFound, "feature" to feature))
-        if(feat.enabled) {
-            actor.sender().sendMessage(minimessage(messages.featureEnabled, "feature" to feat.displayName))
+        if (!actor.sender().hasPermission("bettersurvival.feature.toggle.$feature")) return actor.sender()
+            .sendMessage(!messages.noPermission)
+        val feat = featureRegistry.toggle(feature) ?: return actor.sender()
+            .sendMessage(messages.featureNotFound.mini("feature" to feature))
+        if (feat.enabled) {
+            actor.sender().sendMessage(messages.featureEnabled.mini("feature" to feat.displayName))
         } else {
-            actor.sender().sendMessage(minimessage(messages.featureDisabled, "feature" to feat.displayName))
+            actor.sender().sendMessage(messages.featureDisabled.mini("feature" to feat.displayName))
         }
     }
 

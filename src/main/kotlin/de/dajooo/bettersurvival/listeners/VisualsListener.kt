@@ -43,6 +43,6 @@ object VisualsListener: Listener, KoinComponent {
 
     @EventHandler
     fun handleServerListPing(event: ServerListPingEvent) {
-        event.motd(minimessage(messages.motd))
+        event.motd(!messages.motd)
     }
 }

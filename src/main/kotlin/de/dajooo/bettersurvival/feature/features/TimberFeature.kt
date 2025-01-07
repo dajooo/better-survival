@@ -57,7 +57,7 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
             playerActionbarBuffer.add(event.player)
             return
         }
-        if(playerActionbarBuffer.contains(event.player) && (!MaterialSetTag.LOGS.isTagged(targetBlock.type) || !event.player.isSneaking)) {
+        if(playerActionbarBuffer.contains(event.player) && !MaterialSetTag.LOGS.isTagged(targetBlock.type) && !event.player.isSneaking) {
             event.player.sendActionBar(Component.empty())
         }
     }
@@ -91,47 +91,40 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
             }
         }
     }
-
     private fun Block.connectedBlocks(): List<Block> {
-        val blocks = mutableListOf<Block>()
-        blocks.add(this)
-        val queue = mutableListOf(this)
-        while (queue.isNotEmpty()) {
-            if (blocks.size > config.limit) return blocks
-            val block = queue.removeAt(0)
-            block.neighbors.forEach { neighborBlock ->
-                if (neighborBlock.type == type && !blocks.contains(neighborBlock)) {
-                    blocks.add(neighborBlock)
+        val blocks = HashSet<Block>().apply { add(this@connectedBlocks) }
+        val queue = ArrayDeque<Block>().apply { add(this@connectedBlocks) }
+
+        while (queue.isNotEmpty() && blocks.size <= config.limit) {
+            queue.removeFirst().neighbors.forEach { neighborBlock ->
+                if (neighborBlock.type == type && blocks.add(neighborBlock)) {
                     queue.add(neighborBlock)
                 }
             }
         }
-        return blocks
+        return blocks.toList()
     }
 
     private fun List<Block>.connectedLeaves(type: Material): List<Block> {
-        val blocks = mutableListOf<Block>()
-        val queue = mutableListOf<Block>()
-        queue.addAll(this)
-        while (queue.isNotEmpty()) {
-            if (this.size + blocks.size > config.limit) return blocks
-            val block = queue.removeAt(0)
-            block.neighbors.forEach { neighborBlock ->
-                if (logToLeaveMap[type] == neighborBlock.type && !blocks.contains(neighborBlock)) {
-                    blocks.add(neighborBlock)
+        val blocks = HashSet<Block>()
+        val queue = ArrayDeque(this)
+        val targetType = logToLeaveMap[type]
+
+        while (queue.isNotEmpty() && (this.size + blocks.size <= config.limit)) {
+            queue.removeFirst().neighbors.forEach { neighborBlock ->
+                if (targetType == neighborBlock.type && blocks.add(neighborBlock)) {
                     queue.add(neighborBlock)
                 }
             }
         }
-        return blocks
+        return blocks.toList()
     }
 
     private fun Block.breakNaturallyWithToolBreaking(player: Player, tool: ItemStack, triggerEffect: Boolean) {
-        val canToolBeDamaged = MaterialSetTag.LOGS.isTagged(this.type) &&
-                MaterialTags.AXES.isTagged(tool.type) &&
-                !tool.itemMeta.isUnbreakable &&
-                tool.itemMeta is Damageable
-        if (!canToolBeDamaged) {
+        if (!MaterialSetTag.LOGS.isTagged(this.type) ||
+            !MaterialTags.AXES.isTagged(tool.type) ||
+            tool.itemMeta?.isUnbreakable == true ||
+            tool.itemMeta !is Damageable) {
             this.breakNaturally(tool, triggerEffect)
             return
         }
@@ -140,13 +133,10 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
     }
 
     private val Block.neighbors: Set<Block>
-        get() = LinkedHashSet<Block>().apply {
-            (- 1 until 2).forEach { x ->
-                (- 1 until 2).forEach { y ->
-                    (- 1 until 2).forEach { z ->
-                        this += getRelative(x, y, z)
-                    }
-                }
-            }
+        get() = buildSet(27) {
+            for (x in -1..1)
+                for (y in -1..1)
+                    for (z in -1..1)
+                        add(getRelative(x, y, z))
         }
 }

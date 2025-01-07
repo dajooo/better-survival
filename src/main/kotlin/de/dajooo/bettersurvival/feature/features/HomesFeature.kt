@@ -9,6 +9,7 @@ import de.dajooo.bettersurvival.database.model.PlayerEntity
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.player.survivalPlayer
+import de.dajooo.kaper.extensions.mini
 import de.dajooo.kaper.extensions.minimessage
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
@@ -63,8 +64,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
             player.sendMessage(messages.homeListHeader)
             player.survivalPlayer.homes().forEach {
                 player.sendMessage(
-                    minimessage(
-                        messages.homeListEntry,
+                    messages.homeListEntry.mini(
                         "home" to it.name,
                         "x" to it.location.blockX,
                         "y" to it.location.blockY,
@@ -90,12 +90,13 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         @Subcommand("<name>")
         suspend fun home(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
-            val home = player.survivalPlayer.home(name) ?: return player.sendMessage(!messages.homeNotFound)
+            val home = player.survivalPlayer.home(name)
+                ?: return player.sendMessage(messages.homeNotFound.mini("home" to name))
             newSuspendedTransaction {
                 player.survivalPlayer.databasePlayer.lastPosition = player.location
             }
             plugin.launch(plugin.minecraftDispatcher) {
-                player.sendMessage(minimessage(messages.homeTeleport, "home" to home.name))
+                player.sendMessage(messages.homeTeleport.mini("home" to home.name))
                 player.teleportAsync(home.location)
             }
         }
@@ -114,7 +115,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         suspend fun setHome(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
             player.survivalPlayer.upsertHomeLocation(name)
-            player.sendMessage(minimessage(messages.homeSet, "home" to name))
+            player.sendMessage(messages.homeSet.mini("home" to name))
         }
     }
 
@@ -131,7 +132,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         suspend fun deleteHome(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
             player.survivalPlayer.home(name)?.delete()
-            player.sendMessage(minimessage(messages.homeRemoved, "home" to name))
+            player.sendMessage(messages.homeRemoved.mini("home" to name))
         }
     }
 
