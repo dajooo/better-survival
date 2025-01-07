@@ -1,3 +1,10 @@
+# [1.0.0-beta.12](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2025-01-07)
+
+
+### Features
+
+* version command ([9f901af](https://github.com/dajooo/better-survival/commit/9f901af6cb823a73af537293af44f44239b525bc))
+
 # [1.0.0-beta.11](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2025-01-07)
 
 
