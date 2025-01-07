@@ -3,14 +3,12 @@ package de.dajooo.bettersurvival.feature.features
 import com.destroystokyo.paper.MaterialSetTag
 import com.destroystokyo.paper.MaterialTags
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mccoroutine.bukkit.ticks
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.util.expiringBuffer
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.tagKeyFor
-import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
@@ -20,9 +18,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.Damageable
 import org.koin.core.component.inject
+
 
 class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     @Serializable
@@ -83,7 +80,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
         plugin.launch {
             blocks.forEach { block ->
                 if (!mineableBlocksSetTag.isTagged(block.type)) return@forEach
-                block.breakNaturallyWithToolBreaking(event.player, item, true)
+                event.player.breakBlock(block)
             }
         }
     }
@@ -101,19 +98,6 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
             }
         }
         return blocks.toList()
-    }
-
-    private fun Block.breakNaturallyWithToolBreaking(player: Player, tool: ItemStack, triggerEffect: Boolean) {
-        if (!mineableBlocksSetTag.isTagged(this.type) ||
-            !MaterialTags.PICKAXES.isTagged(tool.type) ||
-            tool.itemMeta?.isUnbreakable == true ||
-            tool.itemMeta !is Damageable
-        ) {
-            this.breakNaturally(tool, triggerEffect)
-            return
-        }
-        player.damageItemStack(tool, 1)
-        this.breakNaturally(tool, triggerEffect)
     }
 
     private val Block.neighbors: Set<Block>
