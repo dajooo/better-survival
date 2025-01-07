@@ -1,3 +1,10 @@
+# [1.0.0-beta.19](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.18...v1.0.0-beta.19) (2025-01-07)
+
+
+### Bug Fixes
+
+* **vein-miner:** ores not dropping experience ([ce03782](https://github.com/dajooo/better-survival/commit/ce03782080485ac0c0549d3453e30af4567d09c2))
+
 # [1.0.0-beta.18](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.17...v1.0.0-beta.18) (2025-01-07)
 
 
