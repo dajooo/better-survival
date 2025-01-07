@@ -1,3 +1,10 @@
+# [1.0.0-beta.16](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2025-01-07)
+
+
+### Bug Fixes
+
+* add mob griefing prevention to grave ([da2bbb2](https://github.com/dajooo/better-survival/commit/da2bbb27f180760d2051d6348789dbcfd04f194f))
+
 # [1.0.0-beta.15](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2025-01-07)
 
 
