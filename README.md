@@ -56,6 +56,12 @@ Adds various quality-of-life crafting recipes:
 - **Magma Block to Cream**: Convert magma blocks into 4 magma cream
 - **Name Tag**: Craft name tags using string, iron, and leather
 
+### 🪦 Graves
+When a player dies, their inventory is dropped as a chest:
+- Chest contains all items from the player's inventory
+- An text display is shown above the chest with the player's name
+- Only breaakable by the player who died or players with the `bettersurvival.graves.break` permission
+
 ## Installation
 
 1. Download the latest release from the [releases page](https://github.com/dajooo/better-survival/tags)
