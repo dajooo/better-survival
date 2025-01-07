@@ -70,7 +70,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     }
 
     @EventHandler
-    fun handleBockBreak(event: BlockBreakEvent) {
+    fun handleBlockBreak(event: BlockBreakEvent) {
         if (!MaterialTags.ORES.isTagged(event.block.type)) return
         if (!event.player.isSneaking) return
         if (!event.block.isPreferredTool(event.player.inventory.itemInMainHand)) return
@@ -101,7 +101,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     }
 
     private fun Block.breakNaturallyWithToolBreaking(player: Player, tool: ItemStack, triggerEffect: Boolean) {
-        if (!MaterialSetTag.LOGS.isTagged(this.type) ||
+        if (!MaterialTags.ORES.isTagged(this.type) ||
             !MaterialTags.PICKAXES.isTagged(tool.type) ||
             tool.itemMeta?.isUnbreakable == true ||
             tool.itemMeta !is Damageable

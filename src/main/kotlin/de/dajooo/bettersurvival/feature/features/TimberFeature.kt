@@ -81,7 +81,7 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
     }
 
     @EventHandler
-    fun handleBockBreak(event: BlockBreakEvent) {
+    fun handleBlockBreak(event: BlockBreakEvent) {
         if (!MaterialSetTag.LOGS.isTagged(event.block.type)) return
         if (!event.player.isSneaking) return
         val logs = event.block.connectedBlocks()
