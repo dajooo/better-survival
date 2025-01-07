@@ -29,6 +29,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     data class Config(
         override var enabled: Boolean = true,
         var limit: Int = 32,
+        var minableBlocks: List<Material> = MaterialTags.ORES.values.toList(),
     ) : FeatureConfig
 
     private val plugin by inject<BetterSurvivalPlugin>()
@@ -40,15 +41,17 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
     private val playerActionbarBuffer = expiringBuffer<Player>()
 
+    private val mineableBlocksSetTag = MaterialSetTag(tagKeyFor("vein_miner_blocks"), config.minableBlocks)
+
     @EventHandler
     fun handleMove(event: PlayerMoveEvent) {
         val targetBlock = event.player.getTargetBlock(setOf(Material.AIR), 5)
-        if (MaterialTags.ORES.isTagged(targetBlock.type) && event.player.isSneaking && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
+        if (mineableBlocksSetTag.isTagged(targetBlock.type) && event.player.isSneaking && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
             event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
             playerActionbarBuffer.add(event.player)
             return
         }
-        if (playerActionbarBuffer.contains(event.player) && (!MaterialTags.ORES.isTagged(targetBlock.type) || !event.player.isSneaking)) {
+        if (playerActionbarBuffer.contains(event.player) && (!mineableBlocksSetTag.isTagged(targetBlock.type) || !event.player.isSneaking)) {
             event.player.sendActionBar(Component.empty())
             playerActionbarBuffer.remove(event.player)
         }
@@ -59,7 +62,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
         val player = event.player
         val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
 
-        if (event.isSneaking && MaterialTags.ORES.isTagged(targetBlock.type) && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
+        if (event.isSneaking && mineableBlocksSetTag.isTagged(targetBlock.type) && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
             player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
             playerActionbarBuffer.add(player)
         }
@@ -71,7 +74,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
     @EventHandler
     fun handleBlockBreak(event: BlockBreakEvent) {
-        if (!MaterialTags.ORES.isTagged(event.block.type)) return
+        if (!mineableBlocksSetTag.isTagged(event.block.type)) return
         if (!event.player.isSneaking) return
         if (!event.block.isPreferredTool(event.player.inventory.itemInMainHand)) return
         val blocks = event.block.connectedBlocks()
@@ -79,7 +82,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
         val item = event.player.equipment.itemInMainHand
         plugin.launch {
             blocks.forEach { block ->
-                if (!MaterialTags.ORES.isTagged(block.type)) return@forEach
+                if (!mineableBlocksSetTag.isTagged(block.type)) return@forEach
                 block.breakNaturallyWithToolBreaking(event.player, item, true)
             }
         }
@@ -101,7 +104,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     }
 
     private fun Block.breakNaturallyWithToolBreaking(player: Player, tool: ItemStack, triggerEffect: Boolean) {
-        if (!MaterialTags.ORES.isTagged(this.type) ||
+        if (!mineableBlocksSetTag.isTagged(this.type) ||
             !MaterialTags.PICKAXES.isTagged(tool.type) ||
             tool.itemMeta?.isUnbreakable == true ||
             tool.itemMeta !is Damageable
