@@ -1,5 +1,9 @@
 # Better Survival
 
+
+> [!CAUTION]
+> This plugin is currently in development and can break anytime. It is not stable and not finished. Do not use in production
+
 A feature-rich Minecraft Paper plugin that enhances the survival gameplay experience with various quality-of-life improvements.
 
 ## Features
