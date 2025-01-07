@@ -27,6 +27,12 @@ Cut down entire trees instantly while sneaking:
 - Configurable block limit
 - Works with all vanilla tree types
 
+### 🪓 Vein Miner
+Break whole ore veins instantly while sneaking:
+- Break connected ores automatically
+- Tool durability is properly consumed
+- Configurable block limit
+
 ### 🌱 Sapling Twerk
 Make saplings grow faster by sneaking near them:
 - Affects all nearby saplings in a 2-block radius
