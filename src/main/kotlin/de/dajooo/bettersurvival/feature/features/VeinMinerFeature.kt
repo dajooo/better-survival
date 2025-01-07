@@ -46,12 +46,12 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     override fun onTickAsync(tick: Int) {
         onlinePlayers.forEach { player ->
             val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
-            if (minableBlocksSetTag.isTagged(targetBlock.type) && player.isSneaking) {
+            if (minableBlocksSetTag.isTagged(targetBlock.type) && player.isSneaking && targetBlock.isPreferredTool(player.inventory.itemInMainHand)) {
                 player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
                 playerActionbarBuffer.add(player)
                 return@forEach
             }
-            if (playerActionbarBuffer.contains(player) && (!MaterialSetTag.LOGS.isTagged(targetBlock.type) || !player.isSneaking)) {
+            if (playerActionbarBuffer.contains(player)) {
                 player.sendActionBar(Component.empty())
                 playerActionbarBuffer.remove(player)
             }

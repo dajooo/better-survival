@@ -61,7 +61,7 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
                 playerActionbarBuffer.add(player)
                 return@forEach
             }
-            if (playerActionbarBuffer.contains(player) && (!MaterialSetTag.LOGS.isTagged(targetBlock.type) || !player.isSneaking)) {
+            if (playerActionbarBuffer.contains(player)) {
                 player.sendActionBar(Component.empty())
                 playerActionbarBuffer.remove(player)
             }
