@@ -55,7 +55,7 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
 
     override fun onTickAsync(tick: Int) {
         onlinePlayers.forEach { player ->
-            val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
+            val targetBlock = player.getTargetBlock(setOf(Material.AIR, Material.WATER), 5)
             if (MaterialSetTag.LOGS.isTagged(targetBlock.type) && player.isSneaking) {
                 player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} logs</red>")
                 playerActionbarBuffer.add(player)

@@ -45,7 +45,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
     override fun onTickAsync(tick: Int) {
         onlinePlayers.forEach { player ->
-            val targetBlock = player.getTargetBlock(setOf(Material.AIR), 5)
+            val targetBlock = player.getTargetBlock(setOf(Material.AIR, Material.WATER), 5)
             if (minableBlocksSetTag.isTagged(targetBlock.type) && player.isSneaking && targetBlock.isPreferredTool(player.inventory.itemInMainHand)) {
                 player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
                 playerActionbarBuffer.add(player)
@@ -58,33 +58,6 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
         }
     }
 
-    @EventHandler
-    fun handleMove(event: PlayerMoveEvent) {
-        val targetBlock = event.player.getTargetBlockExact(5) ?: return
-        if (minableBlocksSetTag.isTagged(targetBlock.type) && event.player.isSneaking && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
-            event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
-            playerActionbarBuffer.add(event.player)
-            return
-        }
-        if (playerActionbarBuffer.contains(event.player) && (!minableBlocksSetTag.isTagged(targetBlock.type) || !event.player.isSneaking)) {
-            event.player.sendActionBar(Component.empty())
-            playerActionbarBuffer.remove(event.player)
-        }
-    }
-
-    @EventHandler
-    fun handleToggleSneak(event: PlayerToggleSneakEvent) {
-        val targetBlock = event.player.getTargetBlockExact(5) ?: return
-
-        if (event.isSneaking && minableBlocksSetTag.isTagged(targetBlock.type) && targetBlock.isPreferredTool(event.player.inventory.itemInMainHand)) {
-            event.player.sendActionBar(!"<red>Mining ${targetBlock.connectedBlocks().count()} blocks</red>")
-            playerActionbarBuffer.add(event.player)
-        }
-        if (!event.isSneaking && playerActionbarBuffer.contains(event.player)) {
-            event.player.sendActionBar(Component.empty())
-            playerActionbarBuffer.remove(event.player)
-        }
-    }
     private val processingBlocks = HashSet<Block>()
 
     @EventHandler
