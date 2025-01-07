@@ -15,22 +15,28 @@ import revxrsal.commands.bukkit.annotation.CommandPermission
 object BetterSurvivalCommand: KoinComponent {
     private val plugin: BetterSurvivalPlugin by inject()
 
+    @Subcommand("version", "v")
+    @CommandPermission("bettersurvival.command.version")
+    fun version(actor: BukkitCommandActor) {
+        actor.sender().sendMessage(!"<prefix>You are running BetterSurvival <yellow>${plugin.pluginMeta.version}</yellow>!")
+    }
+
     @Subcommand("reload", "rl")
     @CommandPermission("bettersurvival.command.reload")
     fun reload(actor: BukkitCommandActor) {
         plugin.reloadConfig()
-        actor.sender().sendMessage(!"<red>Config has been reloaded!")
+        actor.sender().sendMessage(!"<prefix><green>Config has been reloaded!")
     }
 
     @Subcommand("update")
     @CommandPermission("bettersurvival.command.update")
     suspend fun update(actor: BukkitCommandActor) {
         if (!Updater.updateAvailable()) {
-            actor.sender().sendMessage(!"<green>You are already on the latest version!")
+            actor.sender().sendMessage(!"<prefix><green>You are already on the latest version!")
             return
         }
-        actor.sender().sendMessage(!"<red>Starting update...")
+        actor.sender().sendMessage(!"<prefix>Starting update...")
         Updater.update()
-        actor.sender().sendMessage(!"<red>Update was completed. Restart your server now for the changes to apply!")
+        actor.sender().sendMessage(!"<prefix><green>Update was completed. Restart your server now for the changes to apply!")
     }
 }
