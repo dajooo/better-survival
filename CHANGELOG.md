@@ -1,3 +1,10 @@
+# [1.0.0-beta.15](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2025-01-07)
+
+
+### Features
+
+* add graves ([061b084](https://github.com/dajooo/better-survival/commit/061b08427b0c6910c7f5b51109184c7ae2b5635e))
+
 # [1.0.0-beta.14](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2025-01-07)
 
 
