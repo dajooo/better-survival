@@ -1,3 +1,10 @@
+# [1.0.0-beta.22](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.21...v1.0.0-beta.22) (2025-01-07)
+
+
+### Bug Fixes
+
+* use task timer to send timber + vein miner action bar ([a11266e](https://github.com/dajooo/better-survival/commit/a11266eff41533bcea0e0167a9fa77a9f809ca10))
+
 # [1.0.0-beta.21](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.20...v1.0.0-beta.21) (2025-01-07)
 
 
