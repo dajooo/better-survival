@@ -1,3 +1,10 @@
+# [1.0.0-beta.10](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2025-01-07)
+
+
+### Bug Fixes
+
+* unifying minimessage usage ([26268a1](https://github.com/dajooo/better-survival/commit/26268a1a51dc38854cb1c2afa792288019c993f9))
+
 # [1.0.0-beta.9](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2025-01-06)
 
 
