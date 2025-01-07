@@ -10,6 +10,7 @@ class FeatureRegistry : MutableIterable<Feature<*>> {
         SaplingTwerkFeature(),
         CustomRecipesFeature(),
         BetterBedsFeature(),
+        VeinMinerFeature(),
     )
 
     fun init(): FeatureRegistry {
