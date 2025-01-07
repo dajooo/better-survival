@@ -1,3 +1,10 @@
+# [1.0.0-beta.18](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.17...v1.0.0-beta.18) (2025-01-07)
+
+
+### Bug Fixes
+
+* **vein-miner:** make minable blocks configurable ([54af9d5](https://github.com/dajooo/better-survival/commit/54af9d5903f6e2f366f548cbba66adfa105bc366))
+
 # [1.0.0-beta.17](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.16...v1.0.0-beta.17) (2025-01-07)
 
 
