@@ -1,3 +1,10 @@
+# [1.0.0-beta.14](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2025-01-07)
+
+
+### Bug Fixes
+
+* vein miner tool breakage ([2f00866](https://github.com/dajooo/better-survival/commit/2f008665e8f16bcbf010099728b23cf552b4d2b7))
+
 # [1.0.0-beta.13](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2025-01-07)
 
 
