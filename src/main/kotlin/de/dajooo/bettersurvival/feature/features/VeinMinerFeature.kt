@@ -68,19 +68,27 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
             playerActionbarBuffer.remove(player)
         }
     }
+    private val processingBlocks = HashSet<Block>()
 
     @EventHandler
     fun handleBlockBreak(event: BlockBreakEvent) {
-        if (!mineableBlocksSetTag.isTagged(event.block.type)) return
+        val block = event.block
+        if (processingBlocks.contains(block)) return
+        if (!mineableBlocksSetTag.isTagged(block.type)) return
         if (!event.player.isSneaking) return
-        if (!event.block.isPreferredTool(event.player.inventory.itemInMainHand)) return
-        val blocks = event.block.connectedBlocks()
+        if (!block.isPreferredTool(event.player.inventory.itemInMainHand)) return
+
+        val blocks = block.connectedBlocks().take(config.limit)
         if (blocks.size <= 1) return
-        val item = event.player.equipment.itemInMainHand
+
+        event.isCancelled = true
+
         plugin.launch {
-            blocks.forEach { block ->
-                if (!mineableBlocksSetTag.isTagged(block.type)) return@forEach
-                event.player.breakBlock(block)
+            blocks.forEach { connectedBlock ->
+                if (!mineableBlocksSetTag.isTagged(connectedBlock.type)) return@forEach
+                processingBlocks.add(connectedBlock)
+                event.player.breakBlock(connectedBlock)
+                processingBlocks.remove(connectedBlock)
             }
         }
     }
@@ -89,7 +97,7 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
         val blocks = HashSet<Block>().apply { add(this@connectedBlocks) }
         val queue = ArrayDeque<Block>().apply { add(this@connectedBlocks) }
 
-        while (queue.isNotEmpty()) {
+        while (queue.isNotEmpty() && blocks.size < config.limit) {
             queue.removeFirst().neighbors.forEach { neighborBlock ->
                 if (blocks.size >= config.limit) return blocks.toList()
                 if (neighborBlock.type == type && blocks.add(neighborBlock)) {
