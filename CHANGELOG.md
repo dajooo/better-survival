@@ -1,3 +1,10 @@
+# [1.0.0-beta.11](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2025-01-07)
+
+
+### Bug Fixes
+
+* improve timber ([a180295](https://github.com/dajooo/better-survival/commit/a180295b00f8f94fd211ed27f65bbeef0b992128))
+
 # [1.0.0-beta.10](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2025-01-07)
 
 
