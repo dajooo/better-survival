@@ -16,6 +16,9 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.TextDisplay
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockExplodeEvent
+import org.bukkit.event.entity.EntityChangeBlockEvent
+import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.persistence.PersistentDataType
 import java.util.UUID
@@ -77,7 +80,6 @@ class GraveFeature: AbstractFeature<GraveFeature.Config>() {
         if (event.block.type !== Material.CHEST) {
             return
         }
-        println("Broke chest")
         val chest = event.block.state as Chest
         if (chest.persistentDataContainer.has(keyFor("death_chest"))) {
             val chestOwner = uuidFromBytes(chest.persistentDataContainer.get<ByteArray>(keyFor("death_chest"))!!)
@@ -88,6 +90,37 @@ class GraveFeature: AbstractFeature<GraveFeature.Config>() {
             }
             val holoLoc = event.block.location.clone().add(0.5, 1.25, 0.5)
             holoLoc.getNearbyEntitiesByType(TextDisplay::class.java, 0.1).forEach { it.remove() }
+        }
+    }
+
+    @EventHandler
+    fun handleExplosion(event: BlockExplodeEvent) {
+        event.blockList().removeIf { block ->
+            if (block.type == Material.CHEST) {
+                val chest = block.state as Chest
+                chest.persistentDataContainer.has(keyFor("death_chest"))
+            } else false
+        }
+    }
+
+    @EventHandler
+    fun handleEntityExplosion(event: EntityExplodeEvent) {
+        event.blockList().removeIf { block ->
+            if (block.type == Material.CHEST) {
+                val chest = block.state as Chest
+                chest.persistentDataContainer.has(keyFor("death_chest"))
+            } else false
+        }
+    }
+
+    @EventHandler
+    fun handleMobGrief(event: EntityChangeBlockEvent) {
+        val block = event.block
+        if (block.type == Material.CHEST) {
+            val chest = block.state as Chest
+            if (chest.persistentDataContainer.has(keyFor("death_chest"))) {
+                event.isCancelled = true
+            }
         }
     }
 }

@@ -61,6 +61,7 @@ When a player dies, their inventory is dropped as a chest:
 - Chest contains all items from the player's inventory
 - An text display is shown above the chest with the player's name
 - Only breaakable by the player who died or players with the `bettersurvival.graves.break` permission
+- The grave is proctected from explosions and mob griefing
 
 ## Installation
 
