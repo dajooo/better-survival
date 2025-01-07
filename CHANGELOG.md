@@ -1,3 +1,10 @@
+# [1.0.0-beta.17](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.16...v1.0.0-beta.17) (2025-01-07)
+
+
+### Bug Fixes
+
+* store items in pdc and always use a single chest ([2454d0e](https://github.com/dajooo/better-survival/commit/2454d0ef53845a45252fa0ac375ac4c128044bf8))
+
 # [1.0.0-beta.16](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2025-01-07)
 
 
