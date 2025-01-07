@@ -36,8 +36,8 @@ class BetterSurvivalPlayer(
     val color = luckPermsUser?.cachedData?.metaData?.getMetaValue("color")?.let { NamedTextColor.NAMES.value(it) } ?: NamedTextColor.GRAY
 
     fun applyNametag() {
-        player.displayName(prefix.append(name).append(suffix))
-        player.playerListName(prefix.append(name).append(suffix))
+        player.displayName(prefix.append(name.color(color)).append(suffix))
+        player.playerListName(prefix.append(name.color(color)).append(suffix))
         player.nameTag {
             prefix = this@BetterSurvivalPlayer.prefix
             suffix = this@BetterSurvivalPlayer.suffix
