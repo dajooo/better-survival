@@ -1,3 +1,10 @@
+# [1.0.0-beta.25](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.24...v1.0.0-beta.25) (2025-01-07)
+
+
+### Bug Fixes
+
+* cleanup ([67e572f](https://github.com/dajooo/better-survival/commit/67e572fbad7918cf1b37808c969ebb3c47999e53))
+
 # [1.0.0-beta.24](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.23...v1.0.0-beta.24) (2025-01-07)
 
 
