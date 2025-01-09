@@ -1,3 +1,10 @@
+# [1.0.0-beta.28](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.27...v1.0.0-beta.28) (2025-01-09)
+
+
+### Bug Fixes
+
+* teleport retain vehicle ([2c60e54](https://github.com/dajooo/better-survival/commit/2c60e5496faf22d7038c4dbba784e8b897c37b86))
+
 # [1.0.0-beta.27](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2025-01-09)
 
 
