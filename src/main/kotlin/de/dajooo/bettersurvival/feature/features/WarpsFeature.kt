@@ -50,7 +50,7 @@ class WarpsFeature : AbstractFeature<WarpsFeature.Config>() {
         @CommandPlaceholder
         suspend fun warps(actor: BukkitCommandActor) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
-            player.sendMessage(messages.warpListHeader)
+            player.sendMessage(!messages.warpListHeader)
             newSuspendedTransaction { Warp.all() }.toList().forEach {
                 player.sendMessage(
                     messages.warpListEntry.mini(

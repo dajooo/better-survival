@@ -67,7 +67,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         @CommandPlaceholder
         suspend fun homes(actor: BukkitCommandActor) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
-            player.sendMessage(messages.homeListHeader)
+            player.sendMessage(!messages.homeListHeader)
             newSuspendedTransaction { player.survivalPlayer.homes() }.forEach {
                 player.sendMessage(
                     messages.homeListEntry.mini(
