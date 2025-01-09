@@ -11,7 +11,7 @@ import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.player.survivalPlayer
 import de.dajooo.bettersurvival.util.TeleportConfigurable
-import de.dajooo.bettersurvival.util.teleportAsync
+import de.dajooo.bettersurvival.util.teleportSuspending
 import de.dajooo.kaper.extensions.mini
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
@@ -82,7 +82,7 @@ class WarpsFeature : AbstractFeature<WarpsFeature.Config>() {
             }
             plugin.launch(plugin.minecraftDispatcher) {
                 player.sendMessage(messages.warpTeleport.mini("name" to warp.name))
-                player.teleportAsync(warp.location, PlayerTeleportEvent.TeleportCause.COMMAND, config)
+                player.teleportSuspending(warp.location, PlayerTeleportEvent.TeleportCause.COMMAND, config)
             }
         }
     }

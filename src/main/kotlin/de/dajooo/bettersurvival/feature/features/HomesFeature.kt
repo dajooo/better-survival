@@ -9,10 +9,11 @@ import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.player.survivalPlayer
 import de.dajooo.bettersurvival.util.TeleportConfigurable
-import de.dajooo.bettersurvival.util.teleportAsync
+import de.dajooo.bettersurvival.util.teleportSuspending
 import de.dajooo.kaper.extensions.mini
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
+import kotlinx.coroutines.future.await
 import kotlinx.serialization.Serializable
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -55,7 +56,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
                 databasePlayer.deathPosition = null
                 databasePlayer.lastPosition = player.location
             }
-            player.teleportAsync(lastLocation, PlayerTeleportEvent.TeleportCause.COMMAND, config)
+            player.teleportSuspending(lastLocation, PlayerTeleportEvent.TeleportCause.COMMAND, config)
         }
     }
 
@@ -103,7 +104,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
             }
             plugin.launch(plugin.minecraftDispatcher) {
                 player.sendMessage(messages.homeTeleport.mini("name" to home.name))
-                player.teleportAsync(home.location, PlayerTeleportEvent.TeleportCause.COMMAND, config)
+                player.teleportSuspending(home.location, PlayerTeleportEvent.TeleportCause.COMMAND, config)
             }
         }
     }
