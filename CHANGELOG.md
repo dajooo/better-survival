@@ -1,3 +1,11 @@
+# [1.0.0-beta.27](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2025-01-09)
+
+
+### Bug Fixes
+
+* not applying minimessage to homes + warps header ([5fd4fd0](https://github.com/dajooo/better-survival/commit/5fd4fd0ebc20370123733d8bc63c2f8e1aa8ae24))
+* simulate break effect on crop right click ([7fb926e](https://github.com/dajooo/better-survival/commit/7fb926e1f9181a07b89e96ab897896dc70c76db2))
+
 # [1.0.0-beta.26](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2025-01-09)
 
 
