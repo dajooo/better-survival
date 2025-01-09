@@ -15,7 +15,6 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -48,9 +47,9 @@ class BetterSurvivalPlayer(
         }
     }
 
-    suspend fun homes() = newSuspendedTransaction { Home.find(Homes.player eq uuid).toList() }
-    suspend fun home(name: String) = newSuspendedTransaction { Home.find(Homes.player.eq(uuid) and Homes.name.eq(name)).firstOrNull() }
-    suspend fun upsertHomeLocation(name: String) = newSuspendedTransaction {
+    suspend fun homes() = Home.find(Homes.player eq uuid).toList()
+    suspend fun home(name: String) = Home.find(Homes.player.eq(uuid) and Homes.name.eq(name)).firstOrNull()
+    suspend fun upsertHomeLocation(name: String) =
         Home.findSingleByAndUpdate(Homes.player.eq(player.uniqueId) and Homes.name.eq(name)) {
             it.location = player.location
         } ?: Home.new {
@@ -58,7 +57,6 @@ class BetterSurvivalPlayer(
             this.player = databasePlayer
             this.location = this@BetterSurvivalPlayer.player.location
         }
-    }
 }
 
 val Player.survivalPlayer get() = withKoin { get<PlayerRegistry>().findPlayer(uniqueId) } ?: error("Player not registered in registry")

@@ -1,7 +1,7 @@
 package de.dajooo.bettersurvival.util
 
 import java.nio.ByteBuffer
-import java.util.UUID
+import java.util.*
 
 fun UUID.toByteArray(): ByteArray = ByteBuffer.wrap(ByteArray(16)).apply {
     putLong(this@toByteArray.mostSignificantBits)

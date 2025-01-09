@@ -6,7 +6,6 @@ import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.feature.FeatureRegistry
 import de.dajooo.bettersurvival.gui.feature.FeatureOverview
 import de.dajooo.kaper.extensions.mini
-import de.dajooo.kaper.extensions.minimessage
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.to
 import me.devnatan.inventoryframework.ViewFrame

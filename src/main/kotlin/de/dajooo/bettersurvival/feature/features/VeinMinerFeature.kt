@@ -10,7 +10,6 @@ import de.dajooo.bettersurvival.util.expiringBuffer
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.onlinePlayers
 import de.dajooo.kaper.extensions.tagKeyFor
-import de.dajooo.kaper.extensions.timerTask
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
@@ -18,11 +17,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerToggleSneakEvent
-import org.bukkit.scheduler.BukkitTask
 import org.koin.core.component.inject
-
 
 class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
     @Serializable

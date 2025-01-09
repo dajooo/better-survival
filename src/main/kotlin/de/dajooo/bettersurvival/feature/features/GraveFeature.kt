@@ -4,16 +4,14 @@ import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
 import de.dajooo.bettersurvival.util.toByteArray
 import de.dajooo.bettersurvival.util.uuidFromBytes
-import de.dajooo.kaper.extensions.*
+import de.dajooo.kaper.extensions.keyFor
+import de.dajooo.kaper.extensions.not
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Chest
-import org.bukkit.block.DoubleChest
 import org.bukkit.entity.Display
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.TextDisplay
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
@@ -31,10 +29,6 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
-import java.util.UUID
-import kotlin.uuid.toKotlinUuid
 
 class GraveFeature : AbstractFeature<GraveFeature.Config>() {
     @Serializable
@@ -116,10 +110,10 @@ class GraveFeature : AbstractFeature<GraveFeature.Config>() {
         if (!chest.persistentDataContainer.has(keyFor("death_chest_items"))) {
             return
         }
+        event.isCancelled = true
 
         val chestOwner = uuidFromBytes(chest.persistentDataContainer.get(keyFor("death_chest_owner"), PersistentDataType.BYTE_ARRAY)!!)
         if (chestOwner != event.player.uniqueId && !event.player.hasPermission("bettersurvival.graves.break")) {
-            event.isCancelled = true
             event.player.sendMessage(!"<red>You can't break this chest!")
             return
         }
@@ -132,6 +126,7 @@ class GraveFeature : AbstractFeature<GraveFeature.Config>() {
 
         val holoLoc = event.block.location.clone().add(0.5, 1.25, 0.5)
         holoLoc.getNearbyEntitiesByType(TextDisplay::class.java, 0.1).forEach { it.remove() }
+        event.block.type = Material.AIR
     }
 
     @EventHandler

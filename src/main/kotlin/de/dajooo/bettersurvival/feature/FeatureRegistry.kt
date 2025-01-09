@@ -1,8 +1,6 @@
 package de.dajooo.bettersurvival.feature
 
 import de.dajooo.bettersurvival.feature.features.*
-import de.dajooo.kaper.extensions.timerTask
-import org.bukkit.scheduler.BukkitTask
 
 class FeatureRegistry : MutableIterable<Feature<*>> {
     private val features: MutableList<Feature<*>> = mutableListOf(
@@ -13,12 +11,11 @@ class FeatureRegistry : MutableIterable<Feature<*>> {
         CustomRecipesFeature(),
         BetterBedsFeature(),
         VeinMinerFeature(),
-        GraveFeature()
+        GraveFeature(),
+        WarpsFeature(),
     )
 
-    lateinit var scheduler: BukkitTask
-    lateinit var asyncScheduler: BukkitTask
-    private var currentTick = 0
+    private val featureTicker = FeatureTicker(features)
 
     fun init(): FeatureRegistry {
         features.forEach {
@@ -26,17 +23,7 @@ class FeatureRegistry : MutableIterable<Feature<*>> {
                 it.enable()
             }
         }
-        scheduler = timerTask(0L, 1L) {
-            features.forEach{ feature ->
-                feature.tick(currentTick)
-            }
-            currentTick++
-        }
-        asyncScheduler = timerTask(0L, 1L, true) {
-            features.forEach{ feature ->
-                feature.tickAsync(currentTick)
-            }
-        }
+        featureTicker.start()
         return this
     }
 

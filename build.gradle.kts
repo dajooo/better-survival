@@ -102,32 +102,3 @@ paperPluginYaml {
         server("InventoryFramework", PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
     }
 }
-
-publishing {
-    repositories {
-        val isSnapshot = project.version.toString().endsWith("-SNAPSHOT")
-        maven {
-            name = if(isSnapshot) "dajoooPublicSnapshots" else "dajoooPublicReleases"
-            url = uri(if(isSnapshot) {
-                "https://repo.dajooo.de/public-snapshots"
-            } else {
-                "https://repo.dajooo.de/public-releases"
-            })
-            credentials {
-                username = (System.getenv("MAVEN_USERNAME") ?: findProperty("mavenUsername")).toString()
-                password = (System.getenv("MAVEN_PASSWORD") ?: findProperty("mavenPassword")).toString()
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            artifactId = project.name
-            groupId = project.group.toString()
-            version = project.version.toString()
-        }
-    }
-}

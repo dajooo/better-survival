@@ -1,12 +1,10 @@
 package de.dajooo.bettersurvival.feature
 
 import de.dajooo.kaper.extensions.pluginManager
-import de.dajooo.kaper.extensions.timerTask
 import de.dajooo.kommons.loadYamlConfig
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.scheduler.BukkitTask
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import revxrsal.commands.Lamp

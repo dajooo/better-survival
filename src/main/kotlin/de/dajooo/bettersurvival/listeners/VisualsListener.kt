@@ -1,9 +1,7 @@
 package de.dajooo.bettersurvival.listeners
 
-import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.player.PlayerRegistry
-import de.dajooo.bettersurvival.player.survivalPlayer
 import de.dajooo.kaper.event.MiniMessageBuildEvent
 import de.dajooo.kaper.extensions.*
 import io.papermc.paper.event.player.AsyncChatEvent

@@ -3,7 +3,6 @@ package de.dajooo.bettersurvival.feature.features
 import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
-import de.dajooo.bettersurvival.feature.features.CustomRecipesFeature.Config
 import de.dajooo.kaper.extensions.mini
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.onlinePlayers

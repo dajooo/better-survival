@@ -2,8 +2,10 @@ package de.dajooo.bettersurvival.commands
 
 import de.dajooo.bettersurvival.commands.suggestions.SuggestFeatures
 import de.dajooo.bettersurvival.commands.suggestions.SuggestHomes
+import de.dajooo.bettersurvival.commands.suggestions.SuggestWarps
 import de.dajooo.bettersurvival.database.model.Home
 import de.dajooo.bettersurvival.database.model.Homes
+import de.dajooo.bettersurvival.database.model.Warp
 import de.dajooo.bettersurvival.feature.FeatureRegistry
 import de.dajooo.kommons.koin.getKoin
 import de.dajooo.kommons.koin.withKoin
@@ -38,6 +40,11 @@ fun registerCommands(): Lamp<BukkitCommandActor> = withKoin {
             providers.addProviderForAnnotation(SuggestHomes::class.java) { _ ->
                 SuggestionProvider.fromAsync { context ->
                     CommandScope.async { newSuspendedTransaction { Home.find(Homes.player.eq(context.actor().uniqueId())).map { it.name } } }.asCompletableFuture()
+                }
+            }
+            providers.addProviderForAnnotation(SuggestWarps::class.java) { _ ->
+                SuggestionProvider.fromAsync { _ ->
+                    CommandScope.async { newSuspendedTransaction { Warp.all().map { it.name } } }.asCompletableFuture()
                 }
             }
         }
