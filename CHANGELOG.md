@@ -1,3 +1,10 @@
+# [1.0.0-beta.26](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2025-01-09)
+
+
+### Features
+
+* warps ([a667e11](https://github.com/dajooo/better-survival/commit/a667e11814fc3cbfeb32241a836b51fac9111e31))
+
 # [1.0.0-beta.25](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.24...v1.0.0-beta.25) (2025-01-07)
 
 
