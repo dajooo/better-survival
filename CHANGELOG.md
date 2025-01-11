@@ -1,3 +1,11 @@
+# [1.0.0-beta.29](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.28...v1.0.0-beta.29) (2025-01-11)
+
+
+### Features
+
+* add quick access command to quickly access crafting table and enderchest ([5cf67ea](https://github.com/dajooo/better-survival/commit/5cf67ea3837b990a0ab6a0bd153cb2aee9766091))
+* make sugar canes growable ([db443af](https://github.com/dajooo/better-survival/commit/db443afeefd34bfa8dbece9580679783126b7e27))
+
 # [1.0.0-beta.28](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.27...v1.0.0-beta.28) (2025-01-09)
 
 
