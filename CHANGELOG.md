@@ -1,3 +1,10 @@
+# [1.0.0-beta.30](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.29...v1.0.0-beta.30) (2025-01-11)
+
+
+### Bug Fixes
+
+* sugar cane grow ([bcdfe9b](https://github.com/dajooo/better-survival/commit/bcdfe9b4d44017f940bbe8e869d93eb2bc59c813))
+
 # [1.0.0-beta.29](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.28...v1.0.0-beta.29) (2025-01-11)
 
 
