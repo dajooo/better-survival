@@ -36,9 +36,11 @@ class MoreGrowFeature : AbstractFeature<MoreGrowFeature.Config>() {
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
         if (event.player.inventory.itemInMainHand.type != Material.BONE_MEAL) return
         if (event.player.inventory.itemInMainHand.amount < 1) return
-        if (event.clickedBlock?.type != Material.SUGAR_CANE && !growSugarCane(event.clickedBlock)) return
-        event.player.inventory.itemInMainHand.amount -= 1
-        event.isCancelled = true
+        if (event.clickedBlock?.type != Material.SUGAR_CANE && growSugarCane(event.clickedBlock)) {
+            event.player.inventory.itemInMainHand.amount -= 1
+            event.isCancelled = true
+            return
+        }
     }
 
     private fun growSugarCane(block: Block?) : Boolean {
@@ -56,7 +58,7 @@ class MoreGrowFeature : AbstractFeature<MoreGrowFeature.Config>() {
             highestSugarCane = nextSugarCane
         }
         val sugarCaneHeight = highestSugarCane.y - lowestSugarCane.y + 1
-        if (sugarCaneHeight >= 4) return false
+        if (sugarCaneHeight >= 3) return false
         val newSugarCane = highestSugarCane.getRelative(BlockFace.UP)
         newSugarCane.type = Material.SUGAR_CANE
         block.apply {
