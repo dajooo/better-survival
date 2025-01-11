@@ -40,6 +40,7 @@ data class MessageConfig(
     val displayNameFormat: String = "<player_prefix><player_color><player_name></player_color><player_suffix>",
     val playerListNameFormat: String = "<player_prefix><player_color><player_name></player_color><player_suffix>",
     val backDisabled: String = "<prefix><red>Teleporting to your last location is disabled.",
+    val commandDisabled: String = "<prefix><red>This command is disabled.",
 )
 
 fun loadMessageConfig(basePath: Path) = loadYamlConfig(basePath.resolve("messages.yaml"), MessageConfig())

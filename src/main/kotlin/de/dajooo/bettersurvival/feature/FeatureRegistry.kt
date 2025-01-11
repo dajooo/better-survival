@@ -13,6 +13,7 @@ class FeatureRegistry : MutableIterable<Feature<*>> {
         VeinMinerFeature(),
         GraveFeature(),
         WarpsFeature(),
+        QuickAccessCommandsFeature(),
     )
 
     private val featureTicker = FeatureTicker(features)
