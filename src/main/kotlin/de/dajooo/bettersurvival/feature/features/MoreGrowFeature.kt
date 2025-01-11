@@ -60,6 +60,7 @@ class MoreGrowFeature : AbstractFeature<MoreGrowFeature.Config>() {
         val sugarCaneHeight = highestSugarCane.y - lowestSugarCane.y + 1
         if (sugarCaneHeight >= 3) return false
         val newSugarCane = highestSugarCane.getRelative(BlockFace.UP)
+        if (newSugarCane.type != Material.AIR) return false
         newSugarCane.type = Material.SUGAR_CANE
         block.apply {
             world.spawnParticle(Particle.HAPPY_VILLAGER, location.toCenterLocation(), 10, 0.5, 0.5, 0.5)
