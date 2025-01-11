@@ -36,7 +36,7 @@ class MoreGrowFeature : AbstractFeature<MoreGrowFeature.Config>() {
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
         if (event.player.inventory.itemInMainHand.type != Material.BONE_MEAL) return
         if (event.player.inventory.itemInMainHand.amount < 1) return
-        if (event.clickedBlock?.type != Material.SUGAR_CANE && growSugarCane(event.clickedBlock)) {
+        if (event.clickedBlock?.type == Material.SUGAR_CANE && growSugarCane(event.clickedBlock)) {
             event.player.inventory.itemInMainHand.amount -= 1
             event.isCancelled = true
             return
