@@ -122,7 +122,7 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         suspend fun setHome(actor: BukkitCommandActor, @SuggestHomes name: String) {
             val player = actor.asPlayer() ?: return actor.sender().sendMessage(!messages.playersOnlyCommand)
             newSuspendedTransaction {
-                player.survivalPlayer.upsertHomeLocation(name)
+                player.survivalPlayer.upsertHomeLocation(name, player.location)
             }
             player.sendMessage(messages.homeSet.mini("name" to name))
         }

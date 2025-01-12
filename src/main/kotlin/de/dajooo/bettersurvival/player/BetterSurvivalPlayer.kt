@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.luckperms.api.LuckPerms
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
@@ -47,15 +48,15 @@ class BetterSurvivalPlayer(
         }
     }
 
-    suspend fun homes() = Home.find(Homes.player eq uuid).toList()
-    suspend fun home(name: String) = Home.find(Homes.player.eq(uuid) and Homes.name.eq(name)).firstOrNull()
-    suspend fun upsertHomeLocation(name: String) =
+    fun homes() = Home.find(Homes.player eq uuid).toList()
+    fun home(name: String) = Home.find(Homes.player.eq(uuid) and Homes.name.eq(name)).firstOrNull()
+    fun upsertHomeLocation(name: String, loc: Location) =
         Home.findSingleByAndUpdate(Homes.player.eq(player.uniqueId) and Homes.name.eq(name)) {
-            it.location = player.location
+            it.location = loc
         } ?: Home.new {
             this.name = name
             this.player = databasePlayer
-            this.location = this@BetterSurvivalPlayer.player.location
+            this.location = loc
         }
 }
 
