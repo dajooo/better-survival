@@ -1,3 +1,10 @@
+# [1.0.0-beta.34](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.33...v1.0.0-beta.34) (2025-04-24)
+
+
+### Features
+
+* add Quick ShulkerBox feature ([7e33c9e](https://github.com/dajooo/better-survival/commit/7e33c9e25f8e2e99aece12cda64abfc1184d4cbb))
+
 # [1.0.0-beta.33](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.32...v1.0.0-beta.33) (2025-01-12)
 
 
