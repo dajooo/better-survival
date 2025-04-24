@@ -1,3 +1,10 @@
+# [1.0.0-beta.33](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.32...v1.0.0-beta.33) (2025-01-12)
+
+
+### Bug Fixes
+
+* homes not being set to the right location ([5c9a0a5](https://github.com/dajooo/better-survival/commit/5c9a0a50de76b19589bf94e5579474366a563dca))
+
 # [1.0.0-beta.32](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.31...v1.0.0-beta.32) (2025-01-11)
 
 
