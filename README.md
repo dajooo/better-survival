@@ -67,6 +67,12 @@ When a player dies, their inventory is dropped as a chest:
 - Only breaakable by the player who died or players with the `bettersurvival.graves.break` permission
 - The grave is proctected from explosions and mob griefing
 
+### 📦 Quick Shulker Box
+Quickly access the contents of a shulker box without placing it:
+- Hold `Shift` and `Right-Click` while holding the shulker box in the air.
+- Alternatively, `Middle-Click` the shulker box within your inventory screen.
+- Allows managing shulker box contents directly from inventory.
+
 ## Installation
 
 1. Download the latest release from the [releases page](https://github.com/dajooo/better-survival/tags)
