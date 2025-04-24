@@ -9,6 +9,7 @@ import de.dajooo.bettersurvival.database.model.Warp
 import de.dajooo.bettersurvival.database.model.Warps
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.player.survivalPlayer
 import de.dajooo.bettersurvival.util.TeleportConfigurable
 import de.dajooo.bettersurvival.util.teleportSuspending
@@ -36,9 +37,12 @@ class WarpsFeature : AbstractFeature<WarpsFeature.Config>() {
         override var keepVehicle: Boolean = true,
     ) : FeatureConfig, TeleportConfigurable
 
-    override val name = "warps"
-    override val displayName = !"<gold>Warps</gold>"
-    override val description = !"<gray>Adds a warps feature to the plugin.</gray>"
+    override val meta = FeatureMeta(
+        "warps",
+        !"<gold>Warps</gold>",
+        !"<gray>Adds a warps feature to the plugin.</gray>",
+    )
+
     override val typedConfig = config(Config())
 
     override val commands = arrayOf<Any>(WarpsCommand, WarpCommand(config), SetWarpCommand, DeleteWarpCommand)

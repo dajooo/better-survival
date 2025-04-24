@@ -3,6 +3,7 @@ package de.dajooo.bettersurvival.feature.features
 import com.destroystokyo.paper.MaterialSetTag
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.kaper.extensions.isTagged
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.tagKeyFor
@@ -19,7 +20,7 @@ import org.bukkit.util.Vector
 import kotlin.math.cos
 import kotlin.math.sin
 
-class CropRightClickFeature: AbstractFeature<CropRightClickFeature.Config>() {
+class CropRightClickFeature : AbstractFeature<CropRightClickFeature.Config>() {
     @Serializable
     data class Config(
         override var enabled: Boolean = true,
@@ -30,11 +31,13 @@ class CropRightClickFeature: AbstractFeature<CropRightClickFeature.Config>() {
             Material.CARROT,
             Material.NETHER_WART
         ),
-    ): FeatureConfig
+    ) : FeatureConfig
 
-    override val name = "crop-right-click"
-    override val displayName = !"<gold>Crop Right Click</gold>"
-    override val description = !"<gray>Farm and automatically replant a crop by right-clicking it.</gray>"
+    override val meta = FeatureMeta(
+        "crop-right-click",
+        !"<gold>Crop Right Click</gold>",
+        !"<gray>Farm and automatically replant a crop by right-clicking it.</gray>",
+    )
     override val typedConfig = config(Config())
 
     private val allowedSeeds = MaterialSetTag(tagKeyFor("crop_right_click_seeds")).add(config.allowedCropSeeds)

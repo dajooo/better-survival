@@ -3,6 +3,7 @@ package de.dajooo.bettersurvival.feature.features
 import com.destroystokyo.paper.MaterialSetTag
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.kaper.extensions.*
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
@@ -27,9 +28,11 @@ class CustomRecipesFeature : AbstractFeature<CustomRecipesFeature.Config>() {
         var nameTag: Boolean = true,
     ) : FeatureConfig
 
-    override val name = "custom-recipes"
-    override val displayName = !"<gold>Custom Recipes</gold>"
-    override val description = !"<gray>Add custom recipes to the game.</gray>"
+    override val meta = FeatureMeta(
+        "custom-recipes",
+        !"<gold>Custom Recipes</gold>",
+        !"<gray>Add custom recipes to the game.</gray>",
+    )
     override val typedConfig = config(Config())
 
     private val allRecipes: List<Recipe> = Recipes.slabRecipes +

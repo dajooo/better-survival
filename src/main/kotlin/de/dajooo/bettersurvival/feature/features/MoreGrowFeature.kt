@@ -3,6 +3,7 @@ package de.dajooo.bettersurvival.feature.features
 import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.util.TeleportConfigurable
 import de.dajooo.kaper.extensions.not
 import kotlinx.serialization.Serializable
@@ -25,9 +26,11 @@ class MoreGrowFeature : AbstractFeature<MoreGrowFeature.Config>() {
         override var enabled: Boolean = true,
     ) : FeatureConfig
 
-    override val name = "more-grow"
-    override val displayName = !"<gold>More Grow</gold>"
-    override val description = !"<gray>Be able to make everything grow with bone meal.</gray>"
+    override val meta = FeatureMeta(
+        "more-grow",
+        !"<gold>More Grow</gold>",
+        !"<gray>Be able to make everything grow with bone meal.</gray>",
+    )
     override val typedConfig = config(Config())
 
     @EventHandler
@@ -43,7 +46,7 @@ class MoreGrowFeature : AbstractFeature<MoreGrowFeature.Config>() {
         }
     }
 
-    private fun growSugarCane(block: Block?) : Boolean {
+    private fun growSugarCane(block: Block?): Boolean {
         if (block == null) return false
         var lowestSugarCane = block!!
         var highestSugarCane = block!!

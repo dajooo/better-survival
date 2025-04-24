@@ -31,11 +31,11 @@ object FeaturesCommand : KoinComponent {
         actor.sender().sendMessage(!messages.listFeaturesHeader)
         featureRegistry.forEach {
             val statusName =
-                if (it.enabled) it.displayName.color(NamedTextColor.GREEN) else it.displayName.color(NamedTextColor.RED)
+                if (it.enabled) it.meta.displayName.color(NamedTextColor.GREEN) else it.meta.displayName.color(NamedTextColor.RED)
             actor.sender().sendMessage(
                 messages.listFeaturesEntry.mini(
                     "status_name" to statusName,
-                    "description" to it.description
+                    "description" to it.meta.description
                 )
             )
         }
@@ -49,7 +49,7 @@ object FeaturesCommand : KoinComponent {
             .sendMessage(!messages.noPermission)
         val feat = featureRegistry.enable(feature) ?: return actor.sender()
             .sendMessage(messages.featureNotFound.mini("feature" to feature))
-        actor.sender().sendMessage(messages.featureEnabled.mini("feature" to feat.displayName))
+        actor.sender().sendMessage(messages.featureEnabled.mini("feature" to feat.meta.displayName))
     }
 
     @Subcommand("disable <feature>")
@@ -59,7 +59,7 @@ object FeaturesCommand : KoinComponent {
             .sendMessage(!messages.noPermission)
         val feat = featureRegistry.enable(feature) ?: return actor.sender()
             .sendMessage(messages.featureNotFound.mini("feature" to feature))
-        actor.sender().sendMessage(messages.featureDisabled.mini("feature" to feat.displayName))
+        actor.sender().sendMessage(messages.featureDisabled.mini("feature" to feat.meta.displayName))
     }
 
     @Subcommand("toggle <feature>")
@@ -70,9 +70,9 @@ object FeaturesCommand : KoinComponent {
         val feat = featureRegistry.toggle(feature) ?: return actor.sender()
             .sendMessage(messages.featureNotFound.mini("feature" to feature))
         if (feat.enabled) {
-            actor.sender().sendMessage(messages.featureEnabled.mini("feature" to feat.displayName))
+            actor.sender().sendMessage(messages.featureEnabled.mini("feature" to feat.meta.displayName))
         } else {
-            actor.sender().sendMessage(messages.featureDisabled.mini("feature" to feat.displayName))
+            actor.sender().sendMessage(messages.featureDisabled.mini("feature" to feat.meta.displayName))
         }
     }
 

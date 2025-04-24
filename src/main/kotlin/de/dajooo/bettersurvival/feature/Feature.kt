@@ -4,9 +4,7 @@ import de.dajooo.kommons.TypedConfiguration
 import net.kyori.adventure.text.Component
 
 interface Feature<C: FeatureConfig> {
-    val name: String
-    val displayName: Component
-    val description: Component
+    val meta: FeatureMeta
     fun enable()
     fun disable()
     fun tick(tick: Int) {}

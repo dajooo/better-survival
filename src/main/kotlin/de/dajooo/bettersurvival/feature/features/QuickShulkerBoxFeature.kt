@@ -3,6 +3,7 @@ package de.dajooo.bettersurvival.feature.features
 import com.destroystokyo.paper.MaterialSetTag
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.feature.features.QuickAccessCommandsFeature.Config
 import de.dajooo.kaper.extensions.not
 import kotlinx.serialization.Serializable
@@ -19,16 +20,18 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BlockStateMeta
 
-class QuickShulkerBoxFeature: AbstractFeature<QuickShulkerBoxFeature.Config>() {
-    override val name = "quick-shulker-box"
-    override val displayName = !"<gold>Quick Shulker Box</gold>"
-    override val description = !"<gray>Quickly access your shulker box by <green>shift</green> + <green>right-clicking</green>.</gray>"
-    override val typedConfig = config(Config())
-
+class QuickShulkerBoxFeature : AbstractFeature<QuickShulkerBoxFeature.Config>() {
     @Serializable
     data class Config(
         override var enabled: Boolean = true,
     ) : FeatureConfig
+
+    override val meta = FeatureMeta(
+        "quick-shulker-box",
+        !"<gold>Quick Shulker Box</gold>",
+        !"<gray>Quickly access your shulker box by <green>shift</green> + <green>right-clicking</green>.</gray>",
+    )
+    override val typedConfig = config(Config())
 
     private val shulkerBoxes = mutableMapOf<Player, ShulkerBoxData>()
 

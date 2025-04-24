@@ -30,7 +30,7 @@ class FeatureRegistry : MutableIterable<Feature<*>> {
         return this
     }
 
-    fun findFeature(name: String) = features.find { it.name.lowercase() == name.lowercase() }
+    fun findFeature(name: String) = features.find { it.meta.name.lowercase() == name.lowercase() }
 
     fun enable(name: String) = findFeature(name)?.apply { enable() }
 

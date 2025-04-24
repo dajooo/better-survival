@@ -7,6 +7,8 @@ import de.dajooo.bettersurvival.database.model.Home
 import de.dajooo.bettersurvival.database.model.Homes
 import de.dajooo.bettersurvival.database.model.Warp
 import de.dajooo.bettersurvival.feature.FeatureRegistry
+import de.dajooo.bettersurvival.util.extensions.addProviderForAnnotation
+import de.dajooo.bettersurvival.util.extensions.addSuspendingProviderForAnnotation
 import de.dajooo.kommons.koin.getKoin
 import de.dajooo.kommons.koin.withKoin
 import kotlinx.coroutines.CoroutineScope
@@ -22,30 +24,20 @@ import revxrsal.commands.bukkit.BukkitLamp
 import revxrsal.commands.bukkit.actor.BukkitCommandActor
 import revxrsal.commands.ktx.SuspendFunctionsSupport
 
-object CommandScope : CoroutineScope {
-    override val coroutineContext = Dispatchers.Default + SupervisorJob()
-}
-
 fun registerCommands(): Lamp<BukkitCommandActor> = withKoin {
     val featureRegistry by inject<FeatureRegistry>()
 
     val lamp = BukkitLamp.builder(getKoin().get())
         .accept(SuspendFunctionsSupport)
-        .suggestionProviders{ providers ->
-            providers.addProviderForAnnotation(SuggestFeatures::class.java) { _ ->
-                SuggestionProvider { _ ->
-                    featureRegistry.map { it.name }
-                }
+        .suggestionProviders { providers ->
+            providers.addProviderForAnnotation<SuggestFeatures> { annotation, context ->
+                featureRegistry.map { it.meta.name }
             }
-            providers.addProviderForAnnotation(SuggestHomes::class.java) { _ ->
-                SuggestionProvider.fromAsync { context ->
-                    CommandScope.async { newSuspendedTransaction { Home.find(Homes.player.eq(context.actor().uniqueId())).map { it.name } } }.asCompletableFuture()
-                }
+            providers.addSuspendingProviderForAnnotation<SuggestHomes> { annotation, context ->
+                newSuspendedTransaction { Home.find(Homes.player.eq(context.actor().uniqueId())).map { it.name } }
             }
-            providers.addProviderForAnnotation(SuggestWarps::class.java) { _ ->
-                SuggestionProvider.fromAsync { _ ->
-                    CommandScope.async { newSuspendedTransaction { Warp.all().map { it.name } } }.asCompletableFuture()
-                }
+            providers.addSuspendingProviderForAnnotation<SuggestWarps> { annotation, context ->
+                newSuspendedTransaction { Warp.all().map { it.name } }
             }
         }
         .build()

@@ -3,6 +3,7 @@ package de.dajooo.bettersurvival.feature.features
 import com.destroystokyo.paper.MaterialSetTag
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.kaper.area.area
 import de.dajooo.kaper.extensions.addXZ
 import de.dajooo.kaper.extensions.isTagged
@@ -21,9 +22,11 @@ class SaplingTwerkFeature : AbstractFeature<SaplingTwerkFeature.Config>() {
         var chance: Int = 10,
     ) : FeatureConfig
 
-    override val name = "sapling-twerk"
-    override val displayName = !"<gold>Sapling Twerk</gold>"
-    override val description = !"<gray>Make saplings grow faster by twerking at them</gray>"
+    override val meta = FeatureMeta(
+        "sapling-twerk",
+        !"<gold>Sapling Twerk</gold>",
+        !"<gray>Make saplings grow faster by twerking at them</gray>",
+    )
     override val typedConfig = config(Config())
 
     @EventHandler

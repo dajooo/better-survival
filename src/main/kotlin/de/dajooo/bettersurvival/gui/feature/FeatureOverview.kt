@@ -31,16 +31,16 @@ class FeatureOverview : View(), KoinComponent {
                 index,
                 if (feature.enabled) {
                     item(Material.GREEN_WOOL) {
-                        name(feature.displayName.withoutItalic().color(NamedTextColor.GREEN))
+                        name(feature.meta.displayName.withoutItalic().color(NamedTextColor.GREEN))
                         meta {
-                            lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                            lore(listOf(feature.meta.description.withoutItalic().color(NamedTextColor.GRAY)))
                         }
                     }
                 } else {
                     item(Material.RED_WOOL) {
-                        name(feature.displayName.withoutItalic().color(NamedTextColor.RED))
+                        name(feature.meta.displayName.withoutItalic().color(NamedTextColor.RED))
                         meta {
-                            lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                            lore(listOf(feature.meta.description.withoutItalic().color(NamedTextColor.GRAY)))
                         }
                     }
                 }
@@ -51,17 +51,17 @@ class FeatureOverview : View(), KoinComponent {
                 if (feature.enabled) {
                     feature.disable()
                     context.clickOrigin.currentItem = context.item.withType(Material.RED_WOOL).apply {
-                        name(feature.displayName.withoutItalic().color(NamedTextColor.RED))
+                        name(feature.meta.displayName.withoutItalic().color(NamedTextColor.RED))
                         meta {
-                            lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                            lore(listOf(feature.meta.description.withoutItalic().color(NamedTextColor.GRAY)))
                         }
                     }
                 } else {
                     feature.enable()
                     context.clickOrigin.currentItem = context.item.withType(Material.GREEN_WOOL).apply {
-                        name(feature.displayName.withoutItalic().color(NamedTextColor.GREEN))
+                        name(feature.meta.displayName.withoutItalic().color(NamedTextColor.GREEN))
                         meta {
-                            lore(listOf(feature.description.withoutItalic().color(NamedTextColor.GRAY)))
+                            lore(listOf(feature.meta.description.withoutItalic().color(NamedTextColor.GRAY)))
                         }
                     }
                 }

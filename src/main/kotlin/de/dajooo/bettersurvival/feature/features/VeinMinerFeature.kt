@@ -6,6 +6,7 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.util.expiringBuffer
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.onlinePlayers
@@ -29,9 +30,12 @@ class VeinMinerFeature : AbstractFeature<VeinMinerFeature.Config>() {
 
     private val plugin by inject<BetterSurvivalPlugin>()
 
-    override val name = "vein-miner"
-    override val displayName = !"<gold>Vein Minder</gold>"
-    override val description = !"<gray>Break whole ore veins</gray>"
+    override val meta = FeatureMeta(
+        "vein-miner",
+        !"<gold>Vein Minder</gold>",
+        !"<gray>Break whole ore veins.</gray>",
+    )
+    
     override val typedConfig = config(Config())
 
     private val playerActionbarBuffer = expiringBuffer<Player>()

@@ -2,6 +2,7 @@ package de.dajooo.bettersurvival.feature.features
 
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.util.toByteArray
 import de.dajooo.bettersurvival.util.uuidFromBytes
 import de.dajooo.kaper.extensions.keyFor
@@ -43,9 +44,11 @@ class GraveFeature : AbstractFeature<GraveFeature.Config>() {
         ),
     ) : FeatureConfig
 
-    override val name = "grave"
-    override val displayName = !"<gold>Graves</gold>"
-    override val description = !"<gray>Spawn a grave where you die.</gray>"
+    override val meta = FeatureMeta(
+        "grave",
+        !"<gold>Graves</gold>",
+        !"<gray>Spawn a grave where you die.</gray>",
+    )
     override val typedConfig = config(Config())
 
     @EventHandler
@@ -80,7 +83,8 @@ class GraveFeature : AbstractFeature<GraveFeature.Config>() {
             if (chest.persistentDataContainer.has(keyFor("death_chest_items"))) {
                 event.isCancelled = true
 
-                val itemsData = chest.persistentDataContainer.get(keyFor("death_chest_items"), PersistentDataType.BYTE_ARRAY)!!
+                val itemsData =
+                    chest.persistentDataContainer.get(keyFor("death_chest_items"), PersistentDataType.BYTE_ARRAY)!!
                 val items = deserializeItemArray(itemsData)
 
                 val inv = DeathChestHolder(chest).inventory
@@ -95,7 +99,11 @@ class GraveFeature : AbstractFeature<GraveFeature.Config>() {
         if (event.inventory.holder is DeathChestHolder) {
             val chest = (event.inventory.holder as DeathChestHolder).chest
             val serializedItems = event.inventory.contents.filterNotNull().map { it.serializeAsBytes() }.toTypedArray()
-            chest.persistentDataContainer.set(keyFor("death_chest_items"), PersistentDataType.BYTE_ARRAY, serializeItemArray(serializedItems))
+            chest.persistentDataContainer.set(
+                keyFor("death_chest_items"),
+                PersistentDataType.BYTE_ARRAY,
+                serializeItemArray(serializedItems)
+            )
             chest.update()
         }
     }
@@ -112,7 +120,12 @@ class GraveFeature : AbstractFeature<GraveFeature.Config>() {
         }
         event.isCancelled = true
 
-        val chestOwner = uuidFromBytes(chest.persistentDataContainer.get(keyFor("death_chest_owner"), PersistentDataType.BYTE_ARRAY)!!)
+        val chestOwner = uuidFromBytes(
+            chest.persistentDataContainer.get(
+                keyFor("death_chest_owner"),
+                PersistentDataType.BYTE_ARRAY
+            )!!
+        )
         if (chestOwner != event.player.uniqueId && !event.player.hasPermission("bettersurvival.graves.break")) {
             event.player.sendMessage(!"<red>You can't break this chest!")
             return

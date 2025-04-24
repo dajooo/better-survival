@@ -7,6 +7,7 @@ import de.dajooo.bettersurvival.commands.suggestions.SuggestHomes
 import de.dajooo.bettersurvival.config.MessageConfig
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.player.survivalPlayer
 import de.dajooo.bettersurvival.util.TeleportConfigurable
 import de.dajooo.bettersurvival.util.teleportSuspending
@@ -34,9 +35,11 @@ class HomesFeature : AbstractFeature<HomesFeature.Config>() {
         override var keepVehicle: Boolean = true,
     ) : FeatureConfig, TeleportConfigurable
 
-    override val name = "homes"
-    override val displayName = !"<gold>Homes</gold>"
-    override val description = !"<gray>Adds a homes feature to the plugin.</gray>"
+    override val meta = FeatureMeta(
+    "homes",
+    !"<gold>Homes</gold>",
+    !"<gray>Adds a homes feature to the plugin.</gray>",
+    )
     override val typedConfig = config(Config())
 
     override val commands =

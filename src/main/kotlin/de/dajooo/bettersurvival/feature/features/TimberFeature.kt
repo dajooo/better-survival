@@ -7,6 +7,7 @@ import com.github.shynixn.mccoroutine.bukkit.ticks
 import de.dajooo.bettersurvival.BetterSurvivalPlugin
 import de.dajooo.bettersurvival.feature.AbstractFeature
 import de.dajooo.bettersurvival.feature.FeatureConfig
+import de.dajooo.bettersurvival.feature.FeatureMeta
 import de.dajooo.bettersurvival.util.expiringBuffer
 import de.dajooo.kaper.extensions.not
 import de.dajooo.kaper.extensions.onlinePlayers
@@ -33,9 +34,12 @@ class TimberFeature : AbstractFeature<TimberFeature.Config>() {
 
     private val plugin by inject<BetterSurvivalPlugin>()
 
-    override val name = "timber"
-    override val displayName = !"<gold>Timber</gold>"
-    override val description = !"<gray>Breaks connected logs and leaves.</gray>"
+    override val meta = FeatureMeta(
+        "timber",
+        !"<gold>Timber</gold>",
+        !"<gray>Breaks connected logs and leaves.</gray>",
+    )
+
     override val typedConfig = config(Config())
 
     private val logToLeaveMap = mapOf(
