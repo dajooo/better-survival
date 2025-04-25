@@ -1,3 +1,10 @@
+# [1.0.0-beta.38](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.37...v1.0.0-beta.38) (2025-04-25)
+
+
+### Features
+
+* use right-click in inv for quick shulker box ([9b42fcc](https://github.com/dajooo/better-survival/commit/9b42fcc9f28c58c12c04ebc9bd30b1d2c8af7889))
+
 # [1.0.0-beta.37](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.36...v1.0.0-beta.37) (2025-04-25)
 
 
