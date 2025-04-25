@@ -1,3 +1,10 @@
+# [1.0.0-beta.35](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.34...v1.0.0-beta.35) (2025-04-25)
+
+
+### Features
+
+* force new version ([8339f4c](https://github.com/dajooo/better-survival/commit/8339f4c5ad684416e7bf87ccc4c37e532a7c69f7))
+
 # [1.0.0-beta.34](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.33...v1.0.0-beta.34) (2025-04-24)
 
 
