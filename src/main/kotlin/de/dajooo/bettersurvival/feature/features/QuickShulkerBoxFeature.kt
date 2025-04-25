@@ -44,7 +44,7 @@ class QuickShulkerBoxFeature : AbstractFeature<QuickShulkerBoxFeature.Config>() 
 
     @EventHandler
     fun onPlayerInventoryClick(event: InventoryClickEvent) {
-        if (event.click != ClickType.MIDDLE) return
+        if (event.click != ClickType.RIGHT) return
         openShulkerBox(event, event.whoClicked as Player, event.currentItem)
     }
 

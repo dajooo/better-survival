@@ -70,7 +70,7 @@ When a player dies, their inventory is dropped as a chest:
 ### 📦 Quick Shulker Box
 Quickly access the contents of a shulker box without placing it:
 - Hold `Shift` and `Right-Click` while holding the shulker box in the air.
-- Alternatively, `Middle-Click` the shulker box within your inventory screen.
+- Alternatively, `Right-Click` the shulker box within your inventory screen.
 - Allows managing shulker box contents directly from inventory.
 
 ## Installation
