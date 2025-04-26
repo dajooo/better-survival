@@ -26,6 +26,7 @@ class CustomRecipesFeature : AbstractFeature<CustomRecipesFeature.Config>() {
         var rottenFleshToLeather: Boolean = true,
         var magmaBlockToMagmaCream: Boolean = true,
         var nameTag: Boolean = true,
+        var enchantedGoldenApple: Boolean = true,
     ) : FeatureConfig
 
     override val meta = FeatureMeta(
@@ -64,6 +65,9 @@ class CustomRecipesFeature : AbstractFeature<CustomRecipesFeature.Config>() {
         }
         if (config.nameTag) {
             Bukkit.addRecipe(Recipes.nameTagRecipe)
+        }
+        if (config.enchantedGoldenApple) {
+            Bukkit.addRecipe(Recipes.enchantedGoldenApple)
         }
         onlinePlayers.forEach { player ->
             allRecipes.filterIsInstance<Keyed>().forEach { player.discoverRecipe(it.key) }
@@ -170,6 +174,12 @@ class CustomRecipesFeature : AbstractFeature<CustomRecipesFeature.Config>() {
             setIngredient('I', Material.IRON_INGOT)
             setIngredient('S', Material.STRING)
             setIngredient('L', Material.LEATHER)
+        }
+
+        val enchantedGoldenApple = shapedRecipe("enchanted_golden_apple", Material.ENCHANTED_GOLDEN_APPLE) {
+            shape("GGG", "GAG", "GGG")
+            setIngredient('G', Material.GOLD_BLOCK)
+            setIngredient('A', Material.APPLE)
         }
 
         val magmaBlockToMagmaCreamRecipe =
