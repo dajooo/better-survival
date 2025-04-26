@@ -1,3 +1,10 @@
+# [1.0.0-beta.39](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2025-04-26)
+
+
+### Features
+
+* add enchanted golden apple custom recipe ([e784642](https://github.com/dajooo/better-survival/commit/e784642908e8c1bda5c07928a48a4a1a22521b2d))
+
 # [1.0.0-beta.38](https://github.com/dajooo/better-survival/compare/v1.0.0-beta.37...v1.0.0-beta.38) (2025-04-25)
 
 
