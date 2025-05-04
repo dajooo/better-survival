@@ -34,7 +34,6 @@ object Updater : KoinComponent {
         return runCatching {
             httpClient.get("https://api.github.com/repos/dajooo/better-survival/releases/latest") {
                 accept(ContentType("application", "vnd.github.v3+json"))
-                bearerAuth("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")
                 header("X-GitHub-Api-Version", "2022-11-28")
             }.body<GithubRelease>()
         }.getOrNull()

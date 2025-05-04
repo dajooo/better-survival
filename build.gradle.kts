@@ -69,14 +69,6 @@ tasks {
     build {
         dependsOn("shadowJar")
     }
-    processResources {
-        val props = mapOf("version" to version)
-        inputs.properties(props)
-        filteringCharset = "UTF-8"
-        filesMatching("paper-plugin.yml") {
-            expand(props)
-        }
-    }
     withType<JavaCompile> {
         // Preserve parameter names in the bytecode
         options.compilerArgs.add("-parameters")
