@@ -7,7 +7,7 @@
     },
     {
       "name": "+([a-z])/+([a-z0-9])*",
-      "prerelease": "alpha-${name.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0).toString(36).replace(/[^a-z0-9]/g, '')}"
+      "prerelease": "alpha-${name.split('').reduce(function(a, b) { var h = ((a << 5) - a) + b.charCodeAt(0); return h & h; }, 0).toString(36).replace(/[^a-z0-9]/g, '')}"
     }
   ],
   "plugins": [
